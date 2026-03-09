@@ -48,13 +48,13 @@ A personal portfolio project that delivers a modern, intuitive expense tracking 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/umarsaeedalam/cashflow-dojo.git
+git clone https://github.com/thisisfaizanali/pocket-ledger.git
 ```
 
 2. Navigate to the project directory:
 
 ```bash
-cd cashflow-dojo
+cd pocket-ledger
 ```
 
 3. Install dependencies
@@ -70,17 +70,17 @@ yarn install
 
 ```bash
 # Auth Providers
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
+AUTH_GOOGLE_ID=your_google_client_id
+AUTH_GOOGLE_SECRET=your_google_client_secret
+
+AUTH_GITHUB_ID=your_github_client_id
+AUTH_GITHUB_SECRET=your_github_client_secret
 
 # Database
 DATABASE_URL=your_database_url
 
 # Auth
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your_nextauth_secret
+AUTH_SECRET=your_auth_secret
 ```
 
 5. Run the development server
@@ -140,7 +140,7 @@ The application uses a custom theme with the following color palette:
 ## 📝 Project Structure
 
 ```
-cashflow-dojo/
+pocket-ledger/
 ├── src/
 │   ├── app/                             # Next.js app directory
 │   ├── components/                      # React components
@@ -156,20 +156,3 @@ cashflow-dojo/
 │   ├── styles/                         # Styling files
 │   └── utils/                          # Helper functions
 ```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-1. Fork the repository
-2. Create your feature branch (git checkout -b feature/AmazingFeature)
-3. Commit your changes (git commit -m 'Add some AmazingFeature')
-4. Push to the branch (git push origin feature/AmazingFeature)
-5. Open a Pull Request
-
-## 📧 Contact
-
-If you have any questions, feel free to reach out:
-
-- Email: umarsaeedalam@gmail.com
-- LinkedIn: www.linkedin.com/in/umarsaeedalam
