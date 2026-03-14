@@ -2,9 +2,13 @@
 
 A personal portfolio project that delivers a modern, intuitive expense tracking application. Pocket Ledger helps users take control of their finances through comprehensive expense monitoring, detailed spending analysis, and actionable insights into financial habits - all wrapped in a sleek, user-friendly interface.
 
+## 🌐 Live Demo
+
+[View Live Application](https://pocket-ledger-peach.vercel.app)
+
 ## 📸 Snippet
 
-![Pocket Ledger Overview](/public/og-image.png)
+![Pocket Ledger Overview](public/og-image.png)
 
 ## ✨ Features
 
@@ -28,6 +32,7 @@ A personal portfolio project that delivers a modern, intuitive expense tracking 
 - 📱 Fully responsive design for all devices
 - ⚡ Real-time updates and smooth transitions
 - 🔍 Advanced filtering and sorting capabilities
+- 📲 Installable as a Progressive Web App (PWA)
 
 ### Security & Authentication
 
@@ -66,7 +71,8 @@ yarn install
 ```
 
 4. Set up environment variables:
-   Create a `.env.local` file in the root directory and add the following variables:
+
+Create a `.env.local` file in the root directory and add the following variables:
 
 ```bash
 # Auth Providers
@@ -106,10 +112,20 @@ yarn dev
 - **React Hook Form** - Form handling
 - **Zod** - Schema validation
 
+### Backend & Database
+
+- **Prisma ORM** - Type-safe database toolkit
+- **PostgreSQL (Neon)** - Serverless cloud database
+
 ### Authentication
 
-- **NextAuth.js** - Authentication solution
+- **Auth.js (NextAuth)** - Authentication and session management
 - Support for Google and GitHub providers
+
+### Deployment
+
+- **Vercel** - Application hosting and deployment
+- **PWA** - Progressive Web App support
 
 ### Development Tools
 
@@ -120,7 +136,7 @@ yarn dev
 
 ## 📱 Responsive Design
 
-Pocket Ledger is built with a desktop-first approach, ensuring a seamless experience across all devices:
+Pocket Ledger is built with a desktop-first approach, ensuring a seamless experience across all devices.
 
 ## 🎨 Customization
 
@@ -139,7 +155,7 @@ The application uses a custom theme with the following color palette:
 
 ## 📝 Project Structure
 
-```
+```text
 pocket-ledger/
 ├── src/
 │   ├── app/                             # Next.js app directory
@@ -150,9 +166,9 @@ pocket-ledger/
 │   │   │   └── overview/                # Overview page components
 │   │   ├── layout/                      # Layout components
 │   │   └── ui/                          # Reusable UI components
-│   │       ├── shadcn/                  # Shadcn UI components
-│   ├── fonts/                          # Custom font files
-│   ├── lib/                            # Core utility functions
-│   ├── styles/                         # Styling files
-│   └── utils/                          # Helper functions
+│   │       ├── shadcn/                  # shadcn/ui components
+│   ├── fonts/                           # Custom font files
+│   ├── lib/                             # Core utility functions
+│   ├── styles/                          # Styling files
+│   └── utils/                           # Helper functions
 ```
