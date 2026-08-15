@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import { GeistMono } from 'geist/font/mono';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 
 const local = localFont({
   src: '../fonts/literal/Literal - Light (Personal use).otf',
@@ -56,8 +57,17 @@ const metadata: Metadata = {
 
 function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={GeistMono.variable}>
+    <html lang="en" className={GeistMono.variable} suppressHydrationWarning>
       <body className={`${local.className} h-svh bg-background text-foreground`}>
+        <Script id="theme-init" strategy="beforeInteractive">
+          {`(function () {
+            try {
+              var stored = localStorage.getItem('theme');
+              var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+              document.documentElement.classList.toggle('dark', dark);
+            } catch (e) {}
+          })();`}
+        </Script>
         {children}
       </body>
     </html>
