@@ -1,5 +1,6 @@
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
+import { GeistMono } from 'geist/font/mono';
 import localFont from 'next/font/local';
 
 const local = localFont({
@@ -55,8 +56,8 @@ const metadata: Metadata = {
 
 function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={`${local.className} h-svh bg-custom-gradient`}>
+    <html lang="en" className={GeistMono.variable}>
+      <body className={`${local.className} h-svh bg-background text-foreground`}>
         {children}
       </body>
     </html>

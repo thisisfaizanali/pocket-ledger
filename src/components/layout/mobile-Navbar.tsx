@@ -28,14 +28,14 @@ export default function MobileNavbar() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <button className="bg-transparent text-dark-700 border border-accent p-2 rounded-md hover:bg-dark-500 hover:border-dark-500 hover:text-light-50 transition-all focus:outline-none focus-visible:!outline-accent-500 transform active:scale-90 ease-in-out duration-200">
+        <button className="bg-transparent text-muted-foreground border border-border p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-all focus:outline-none focus-visible:!outline-ring transform active:scale-90 ease-in-out duration-200">
           <RxHamburgerMenu />
         </button>
       </SheetTrigger>
 
       <SheetContent
         side={'left'}
-        className="bg-[#CDD5E0] rounded-r-3xl border-0 text-dark-700 w-[265px] font-semibold pl-4"
+        className="bg-card rounded-r-3xl border-0 text-muted-foreground w-[265px] font-semibold pl-4"
       >
         <nav
           className={
@@ -45,7 +45,7 @@ export default function MobileNavbar() {
           <Link
             href="/dashboard"
             onClick={() => setOpen(false)}
-            className={`${local.className} ml-1 mt-8 text-3xl tracking-tight font-bold text-dark-900 focus:outline-none focus-visible:outline-accent-500 rounded p-1`}
+            className={`${local.className} ml-1 mt-8 text-3xl tracking-tight font-bold text-foreground focus:outline-none focus-visible:outline-ring rounded p-1`}
           >
             Pocket Ledger
           </Link>
@@ -55,17 +55,17 @@ export default function MobileNavbar() {
               {pathname === '/dashboard' && (
                 <motion.div
                   layoutId="nav"
-                  className="bg-accent-500 border-accent-500 block absolute inset-0 rounded-lg"
+                  className="bg-primary block absolute inset-0 rounded-lg"
                 />
               )}
 
               <Link
                 href="/dashboard"
                 onClick={() => setOpen(false)}
-                className={`rounded-lg focus:outline-none ${pathname === '/dashboard' ? 'focus-visible:outline-dark-700' : 'focus-visible:outline-accent-500'}`}
+                className={`rounded-lg focus:outline-none ${pathname === '/dashboard' ? 'focus-visible:outline-ring' : 'focus-visible:outline-ring'}`}
               >
                 <div
-                  className={`mt-auto rounded-lg text-[0.9375rem] flex gap-2 items-center ${pathname === '/dashboard' ? 'text-light-50' : 'text-dark-700 bg-transparent border-transparent hover:bg-accent-300 hover:text-light-50'} relative z-10 py-3 pl-4 pr-14 transition-colors ease-in-out duration-200`}
+                  className={`mt-auto rounded-lg text-[0.9375rem] flex gap-2 items-center ${pathname === '/dashboard' ? 'text-primary-foreground' : 'text-muted-foreground bg-transparent border-transparent hover:bg-accent hover:text-accent-foreground'} relative z-10 py-3 pl-4 pr-14 transition-colors ease-in-out duration-200`}
                 >
                   <TbLayoutDashboardFilled className={'text-xl'} />
 
@@ -78,17 +78,17 @@ export default function MobileNavbar() {
               {pathname === '/dashboard/expenses' && (
                 <motion.div
                   layoutId="nav"
-                  className="bg-accent-500 border-accent-500 block absolute inset-0 rounded-lg"
+                  className="bg-primary block absolute inset-0 rounded-lg"
                 />
               )}
 
               <Link
                 href="/dashboard/expenses"
                 onClick={() => setOpen(false)}
-                className={`focus:outline-none rounded-lg ${pathname === '/dashboard/expenses' ? 'focus-visible:outline-dark-700' : 'focus-visible:outline-accent-500'}`}
+                className={`focus:outline-none rounded-lg ${pathname === '/dashboard/expenses' ? 'focus-visible:outline-ring' : 'focus-visible:outline-ring'}`}
               >
                 <div
-                  className={`mt-auto rounded-lg text-[0.91rem] flex gap-2 items-center ${pathname === '/dashboard/expenses' ? 'text-light-50' : 'text-dark-700 bg-transparent border-transparent hover:bg-accent-300 hover:text-light-50'} relative z-10 py-3 pl-4 pr-14 transition-colors ease-in-out duration-200`}
+                  className={`mt-auto rounded-lg text-[0.91rem] flex gap-2 items-center ${pathname === '/dashboard/expenses' ? 'text-primary-foreground' : 'text-muted-foreground bg-transparent border-transparent hover:bg-accent hover:text-accent-foreground'} relative z-10 py-3 pl-4 pr-14 transition-colors ease-in-out duration-200`}
                 >
                   <FaMoneyBillTransfer className={'text-xl'} />
 
@@ -101,17 +101,17 @@ export default function MobileNavbar() {
               {pathname === '/dashboard/analytics' && (
                 <motion.div
                   layoutId="nav"
-                  className="bg-accent-500 block absolute inset-0 rounded-lg"
+                  className="bg-primary block absolute inset-0 rounded-lg"
                 />
               )}
 
               <Link
                 href="/dashboard/analytics"
                 onClick={() => setOpen(false)}
-                className={`rounded-lg focus:outline-none ${pathname === '/dashboard/analytics' ? 'focus-visible:outline-dark-700' : 'focus-visible:outline-accent-500'}`}
+                className={`rounded-lg focus:outline-none ${pathname === '/dashboard/analytics' ? 'focus-visible:outline-ring' : 'focus-visible:outline-ring'}`}
               >
                 <div
-                  className={`mt-auto rounded-lg text-[0.9375rem] flex gap-2 items-center ${pathname === '/dashboard/analytics' ? 'text-light-50' : 'text-dark-700 bg-transparent border-transparent hover:bg-accent-300 hover:text-light-50'} relative z-10 py-3 pl-4 pr-14 transition-colors ease-in-out duration-200`}
+                  className={`mt-auto rounded-lg text-[0.9375rem] flex gap-2 items-center ${pathname === '/dashboard/analytics' ? 'text-primary-foreground' : 'text-muted-foreground bg-transparent border-transparent hover:bg-accent hover:text-accent-foreground'} relative z-10 py-3 pl-4 pr-14 transition-colors ease-in-out duration-200`}
                 >
                   <MdAnalytics className={'text-xl'} />
 
@@ -125,7 +125,7 @@ export default function MobileNavbar() {
                 <button
                   onClick={() => setOpen(false)}
                   className={
-                    'mt-auto rounded-lg text-[0.9375rem] flex gap-2 items-center py-3 pl-4 pr-14 hover:bg-accent-300 hover:text-light-50 transition-colors ease-in-out duration-200'
+                    'mt-auto rounded-lg text-[0.9375rem] flex gap-2 items-center py-3 pl-4 pr-14 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors ease-in-out duration-200'
                   }
                   type="submit"
                 >

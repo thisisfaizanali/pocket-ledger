@@ -64,7 +64,7 @@ function LoginPage() {
             variants={titleVariants}
             initial="hidden"
             animate="visible"
-            className={`${local.className} text-dark-900 text-8xl tracking-tighter font-bold max-[1340px]:text-center max-[700px]:text-7xl`}
+            className={`${local.className} text-foreground text-8xl tracking-tighter font-bold max-[1340px]:text-center max-[700px]:text-7xl`}
           >
             Pocket Ledger
           </motion.h1>
@@ -73,7 +73,7 @@ function LoginPage() {
             variants={subtitleVariants}
             initial="hidden"
             animate="visible"
-            className="text-3xl max-[700px]:text-2xl tracking-tight text-dark-500 font-normal mt-5 max-[1340px]:text-center max-[1340px]:mt-3 max-[550px]:hidden"
+            className="text-3xl max-[700px]:text-2xl tracking-tight text-muted-foreground font-normal mt-5 max-[1340px]:text-center max-[1340px]:mt-3 max-[550px]:hidden"
           >
             Analyze your spending with comprehensive categorization and tracking
             for better financial control.
@@ -84,16 +84,16 @@ function LoginPage() {
           variants={subtitleVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-md font-semibold rounded-3xl bg-white backdrop-filter backdrop-blur-sm bg-opacity-50 text-dark-500 max-[550px]:bg-transparent py-16 max-[1340px]:py-12 max-[700px]:py-8 px-8 max-[700px]:px-5 max-[550px]:px-4 flex flex-col items-center max-[550px]:border-transparent max-[1340px]:self-center"
+          className="max-w-md font-semibold rounded-3xl bg-card/70 backdrop-filter backdrop-blur-sm border border-border text-muted-foreground max-[550px]:bg-transparent max-[550px]:border-transparent py-16 max-[1340px]:py-12 max-[700px]:py-8 px-8 max-[700px]:px-5 max-[550px]:px-4 flex flex-col items-center max-[1340px]:self-center"
         >
-          <h1 className="text-3xl text-dark-700 max-[700px]:text-2xl tracking-tight text-center max-[550px]:hidden">
+          <h1 className="text-3xl text-foreground max-[700px]:text-2xl tracking-tight text-center max-[550px]:hidden">
             Enter your financial dojo & begin tracking
           </h1>
 
           <form action={signInGoogle}>
             <button
               type="submit"
-              className="flex items-center gap-2 mt-10 rounded-lg max-[550px]:mt-1 max-[700px]:mt-6 bg-accent-500 text-light-50 py-2 px-20 max-[700px]:px-16 max-[440px]:px-11 border border-accent-500 hover:border-accent-600 hover:bg-accent-600 outline-none focus-visible:outline-dark-500 transition-all ease-in-out duration-200 transform active:scale-90"
+              className="flex items-center gap-2 mt-10 rounded-lg max-[550px]:mt-1 max-[700px]:mt-6 bg-primary text-primary-foreground py-2 px-20 max-[700px]:px-16 max-[440px]:px-11 border border-primary hover:bg-primary/90 outline-none focus-visible:outline-ring transition-all ease-in-out duration-200 transform active:scale-90"
             >
               <span className="text-lg max-[700px]:text-base tracking-wide">
                 Continue with
@@ -110,7 +110,7 @@ function LoginPage() {
           <form action={signInGithub}>
             <button
               type="submit"
-              className="flex items-center rounded-lg gap-2 mt-2 bg-accent-500 text-light-50 py-2 px-20 max-[700px]:px-16 max-[440px]:px-11 border border-accent-500 hover:bg-accent-600 hover:border-accent-600 outline-none focus-visible:outline-dark-500 transition-all ease-in-out duration-200 transform active:scale-90"
+              className="flex items-center rounded-lg gap-2 mt-2 bg-primary text-primary-foreground py-2 px-20 max-[700px]:px-16 max-[440px]:px-11 border border-primary hover:bg-primary/90 outline-none focus-visible:outline-ring transition-all ease-in-out duration-200 transform active:scale-90"
             >
               <span className="text-lg max-[700px]:text-base tracking-wide">
                 Continue with
