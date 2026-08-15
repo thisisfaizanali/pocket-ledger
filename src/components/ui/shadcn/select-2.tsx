@@ -80,7 +80,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border border-neutral-200 bg-white text-neutral-950 shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50",
+        "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
         className
@@ -123,7 +123,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full tracking-wide cursor-default select-none items-center max-[1620px]:text-sm max-[645px]:text-xs text-dark-700 rounded-lg hover:text-light-50 hover:bg-accent-300 transition-colors ease-in-out duration-200 py-1.5 pl-2 pr-8 text-sm outline-none focus:outline-none data-[state=checked]:bg-accent-500 data-[state=checked]:text-light-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full tracking-wide cursor-default select-none items-center max-[1620px]:text-sm max-[645px]:text-xs text-popover-foreground rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors ease-in-out duration-200 py-1.5 pl-2 pr-8 text-sm outline-none focus:outline-none data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
     {...props}
