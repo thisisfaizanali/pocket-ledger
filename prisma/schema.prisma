@@ -20,6 +20,7 @@ model User {
   currency    String
   currentPage Int       @default(1)
   expenses    Expense[]
+  budgets     Budget[]
 }
 
 model Expense {
@@ -31,4 +32,15 @@ model Expense {
   amount     Float
 
   user       User     @relation(fields: [user_id], references: [user_id])
+}
+
+model Budget {
+  budget_id    String @id @default(uuid())
+  user_id      String
+  category     String
+  monthlyLimit Float
+
+  user         User   @relation(fields: [user_id], references: [user_id])
+
+  @@unique([user_id, category])
 }

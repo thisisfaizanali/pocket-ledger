@@ -90,3 +90,30 @@ export const newExpenseSchemaServer = z.object({
    date: dateSchema,
    category: z.enum(categories)
 })
+
+// Client-side budget validation with string amount
+export const budgetSchemaClient = z.object({
+   category: z.enum(categories),
+   monthlyLimit: z.string()
+       .min(1, "Monthly limit is required")
+       .refine((val) => {
+           const num = parseFloat(val);
+           return num > 0 && num <= 999999;
+       }, {
+           message: "Monthly limit must be greater than 0 and not exceed 999,999",
+       }),
+})
+
+// Server-side budget validation with numeric amount and UUID
+export const budgetSchemaServer = z.object({
+   id: z.string().uuid(),
+   category: z.enum(categories),
+   monthlyLimit: z.number({
+           required_error: "Monthly limit is required",
+           invalid_type_error: "Monthly limit must be a number",
+       })
+       .positive("Monthly limit must be greater than 0")
+       .max(999999, "Monthly limit must not exceed 999,999")
+       .finite("Monthly limit must be finite")
+       .safe("Monthly limit must be finite"),
+})

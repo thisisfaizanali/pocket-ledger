@@ -118,3 +118,16 @@ export async function fetchAllUserExpenses(userId: string, currentPage: number) 
         currentPage: validatedPage
     }
 }
+
+/**
+ * Retrieves a user's monthly budgets (one per category, at most)
+ */
+export async function fetchBudgets(userId: string) {
+    try {
+        return await prisma.budget.findMany({
+            where: { user_id: userId }
+        })
+    } catch (error) {
+        throw error
+    }
+}

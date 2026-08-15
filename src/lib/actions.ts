@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { auth } from "@/lib/auth"
 import { signOut, signIn } from '@/lib/auth'
 import prisma from "../../prisma/client"
-import { editProfileSchemaServer, newExpenseSchemaServer } from '@/utils/schemas'
+import { editProfileSchemaServer, newExpenseSchemaServer, budgetSchemaServer } from '@/utils/schemas'
 import { EditProfile, UserExpense } from "@/utils/types"
 
 /* Authentication Actions */
@@ -79,22 +79,23 @@ export async function newExpense(userId: string, data: UserExpense) {
 
 export async function editExpense(expense_id: string, data: UserExpense) {
     const session = await auth()
-    if (!session) throw new Error("You must be logged in")
+    if (!session?.user?.email) throw new Error("You must be logged in")
 
     // Validate expense data
-    if (!newExpenseSchemaServer.safeParse({ 
+    if (!newExpenseSchemaServer.safeParse({
         id: expense_id,
         description: data.description,
         amount: data.amount,
         date: data.date,
-        category: data.category 
+        category: data.category
     }).success) {
         throw Error('Invalid Data/ExpenseID')
     }
 
     try {
-        await prisma.expense.update({
-            where: { expense_id },
+        // Scoping by the session's email prevents editing another user's expense
+        const { count } = await prisma.expense.updateMany({
+            where: { expense_id, user: { email: session.user.email } },
             data: {
                 name: data.description,
                 amount: data.amount,
@@ -102,7 +103,8 @@ export async function editExpense(expense_id: string, data: UserExpense) {
                 category: data.category
             }
         })
-      
+        if (count === 0) throw new Error('Expense not found')
+
         revalidatePath('/', 'layout')
     } catch (error) {
         throw error
@@ -111,16 +113,55 @@ export async function editExpense(expense_id: string, data: UserExpense) {
 
 export async function deleteExpense(expenseId: string) {
     const session = await auth()
-    if (!session) throw new Error("You must be logged in")
+    if (!session?.user?.email) throw new Error("You must be logged in")
 
     try {
-        await prisma.expense.delete({
-            where: { expense_id: expenseId }
+        // Scoping by the session's email prevents deleting another user's expense
+        const { count } = await prisma.expense.deleteMany({
+            where: { expense_id: expenseId, user: { email: session.user.email } }
         })
+        if (count === 0) throw new Error('Expense not found')
 
         revalidatePath('/', 'layout')
     } catch (error) {
         return error
+    }
+}
+
+/* Budget Management */
+export async function setBudget(userId: string, category: string, monthlyLimit: number) {
+    const session = await auth()
+    if (!session) throw new Error("You must be logged in")
+
+    if (!budgetSchemaServer.safeParse({ id: userId, category, monthlyLimit }).success) {
+        throw Error('Invalid Data/UserID')
+    }
+
+    try {
+        await prisma.budget.upsert({
+            where: { user_id_category: { user_id: userId, category } },
+            update: { monthlyLimit },
+            create: { user_id: userId, category, monthlyLimit }
+        })
+
+        revalidatePath('/dashboard', 'layout')
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function deleteBudget(userId: string, category: string) {
+    const session = await auth()
+    if (!session) throw new Error("You must be logged in")
+
+    try {
+        await prisma.budget.deleteMany({
+            where: { user_id: userId, category }
+        })
+
+        revalidatePath('/dashboard', 'layout')
+    } catch (error) {
+        throw error
     }
 }
 
