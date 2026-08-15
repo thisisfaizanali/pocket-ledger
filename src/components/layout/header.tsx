@@ -12,7 +12,7 @@ function Header({ user, profilePicture }: Props) {
     const isTablet = useMediaQuery('(max-width: 1160px)');
 
     return (
-        <header className={"flex justify-end max-[1160px]:justify-between mx-12 max-[1400px]:mx-8 max-[1160px]:mx-6 items-center row-start-1"}>
+        <header className={"flex justify-end max-[1160px]:justify-between mx-12 max-[1400px]:mx-8 max-[1160px]:mx-6 items-center row-start-1 border-b border-border"}>
             {isTablet && <MobileNavbar />}
             
             <ProfileButton 
