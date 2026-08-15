@@ -246,6 +246,33 @@ export function getMonthYearRange(expenses: Expense[]): string[] {
     return monthYearRange
 }
 
+/**
+ * Builds a total-spend-per-month series for the most recent `count` months in
+ * `monthsRange` (which is most-recent-first, per getMonthYearRange), returned
+ * oldest-first for left-to-right trend charting. Months with no expenses still
+ * appear, with a total of 0.
+ */
+export function getMonthlySpendingTrend(expenses: Expense[], monthsRange: string[], count = 6) {
+    return monthsRange
+        .slice(0, count)
+        .reverse()
+        .map((monthYear) => {
+            const [monthName, year] = monthYear.split(' ')
+            const month = new Date(Date.parse(monthName + " 1, " + year)).getMonth()
+            const fullYear = parseInt(year)
+
+            const total = expenses
+                .filter(expense => {
+                    const expenseDate = new Date(expense.date)
+                    return expenseDate.getMonth() === month &&
+                           expenseDate.getFullYear() === fullYear
+                })
+                .reduce((sum, expense) => sum + expense.amount, 0)
+
+            return { month: monthYear, total: Number(total.toFixed(2)) }
+        })
+}
+
 // Formatting and display utilities
 export function formatLabel(key: string): string {
     return key in specialLabels 

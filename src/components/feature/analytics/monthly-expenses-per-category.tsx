@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction } from "react"
+import { Cell, Pie, PieChart } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/shadcn/card"
-import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi"
-import CategoryIcon from "@/components/ui/category-icon"
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/shadcn/chart"
+import AnalyticsCardHeader from "./analytics-card-header"
 import { categories } from "@/utils/data"
 import { formatExpenseAmount, getCategoryColor, getCurrencySymbol } from "@/utils/functions"
 
@@ -12,51 +13,84 @@ type Props = {
     month: string;
 }
 
-function MonthlyExpensesPerCategory({ data, currency, handleCard, }: Props) {
+const chartConfig = {
+    amount: { label: "Amount" },
+} satisfies ChartConfig
+
+function MonthlyExpensesPerCategory({ data, currency, handleCard }: Props) {
+    const chartData = categories
+        .map((category, index) => ({ category, amount: data[index], fill: getCategoryColor(category) }))
+        .filter((entry) => entry.amount > 0)
+
+    const total = data.reduce((sum, amount) => sum + amount, 0)
+
     return (
         <Card className="bg-transparent border-0 shadow-none">
-            <CardHeader className="p-0 text-dark-700 text-xl tracking-wide text-center">
-                <CardTitle className="flex justify-center items-center gap-5 max-[800px]:gap-3">
-                    <button
-                        onClick={() => handleCard((card) => card - 1)}
-                        disabled
-                        className="flex items-center justify-center bg-transparent text-transparent rounded-lg w-7 max-[800px]:w-6 h-7 max-[800px]:h-6 focus:outline-none transition-colors ease-in-out duration-100"
-                    >
-                        <HiArrowSmLeft />
-                    </button>
-
-                    <h2 className="max-[800px]:text-lg max-[500px]:text-base tracking-wide">Where Your Money Goes</h2>
-
-                    <button
-                        onClick={() => handleCard((card) => card + 1)} 
-                        className="flex items-center justify-center bg-dark-700 text-light-50 border-dark-700 border rounded-lg w-7 max-[800px]:w-6 h-7 max-[800px]:h-6 hover:bg-dark-500 hover:border-dark-500 cursor-pointer focus:outline-none focus-visible:outline-accent-500 transition-colors ease-in-out transform active:scale-90 duration-100"
-                    >
-                        <HiArrowSmRight />
-                    </button>
+            <CardHeader className="p-0">
+                <CardTitle>
+                    <AnalyticsCardHeader
+                        title="Where Your Money Goes"
+                        onNext={() => handleCard((card) => card + 1)}
+                    />
                 </CardTitle>
             </CardHeader>
 
-            <CardContent className="p-0 mt-6 max-[1400px]:mt-5 text-accent font-semibold tracking-wide">
-                <div className="grid grid-cols-2 max-[800px]:grid-cols-1 gap-2">
-                    {categories.map((category, index) => (
-                        <div key={category} className="flex items-center justify-between bg-white backdrop-filter backdrop-blur-sm bg-opacity-50 rounded-3xl p-4 max-[800px]:p-3 max-[500px]:p-2 pr-8 max-[800px]:pr-6 max-[500px]:pr-4">
-                            <div className="flex items-center gap-3 max-[800px]:gap-2">
-                                <div className="h-11 max-[800px]:h-10 max-[500px]:h-9 w-11 max-[800px]:w-10 max-[500px]:w-9 flex justify-center items-center rounded-xl" style={{ backgroundColor: getCategoryColor(category) }}>
-                                    <CategoryIcon 
-                                        category={category}
-                                        classname="text-2xl max-[800px]:text-xl max-[500px]:text-lg" 
+            <CardContent className="p-0 mt-6 max-[1400px]:mt-5">
+                {chartData.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-16 tracking-wide">
+                        No expenses recorded this month.
+                    </p>
+                ) : (
+                    <>
+                        <div className="relative mx-auto aspect-square max-h-72 w-full">
+                            <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-72">
+                                <PieChart>
+                                    <ChartTooltip
+                                        content={
+                                            <ChartTooltipContent
+                                                hideLabel
+                                                nameKey="category"
+                                                formatter={(value, name) => (
+                                                    <span className="tracking-wide">
+                                                        {name}: {getCurrencySymbol(currency)} {formatExpenseAmount(value as number)}
+                                                    </span>
+                                                )}
+                                            />
+                                        }
                                     />
-                                </div>
+                                    <Pie
+                                        data={chartData}
+                                        dataKey="amount"
+                                        nameKey="category"
+                                        innerRadius="55%"
+                                        outerRadius="85%"
+                                        strokeWidth={2}
+                                    >
+                                        {chartData.map((entry) => (
+                                            <Cell key={entry.category} fill={entry.fill} stroke="hsl(var(--card))" />
+                                        ))}
+                                    </Pie>
+                                </PieChart>
+                            </ChartContainer>
 
-                                <div className="max-[500px]:text-sm">{category}</div>
-                            </div>
-                            
-                            <div className="max-[500px]:text-sm">
-                                {`${getCurrencySymbol(currency)} ${formatExpenseAmount(data[index])}`}
+                            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <span className="font-mono tabular-nums text-lg max-[800px]:text-base font-semibold text-foreground">
+                                    {getCurrencySymbol(currency)} {formatExpenseAmount(total)}
+                                </span>
+                                <span className="text-xs text-muted-foreground tracking-wide">Total spent</span>
                             </div>
                         </div>
-                    ))}
-                </div>
+
+                        <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 text-sm text-foreground tracking-wide">
+                            {chartData.map((entry) => (
+                                <div key={entry.category} className="flex items-center gap-1.5">
+                                    <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: entry.fill }} />
+                                    {entry.category}
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                )}
             </CardContent>
         </Card>
     )

@@ -5,7 +5,8 @@ import MonthButton from '@/components/ui/month-button'
 import ExpenseFrequencyPerCategory from './expense-frequency-per-category'
 import HighestExpensePerCategory from './highest-expense-per-category'
 import MonthlyExpensesPerCategory from './monthly-expenses-per-category'
-import { getMonthYearRange, calculateCategoryTotals, processMonthlyTopExpenses, processExpenseFrequency } from "@/utils/functions"
+import SpendingTrendChart from './spending-trend-chart'
+import { getMonthYearRange, calculateCategoryTotals, processMonthlyTopExpenses, processExpenseFrequency, getMonthlySpendingTrend } from "@/utils/functions"
 import { Expense } from '@/utils/types'
 
 type Props = {
@@ -46,6 +47,12 @@ function AnalyticsSection({ expenses, currency }: Props) {
             
             {(card === 3) && <ExpenseFrequencyPerCategory
                 data={processExpenseFrequency(expenses, month)}
+                handleCard={setCard}
+            />}
+
+            {(card === 4) && <SpendingTrendChart
+                data={getMonthlySpendingTrend(expenses, monthsRange)}
+                currency={currency}
                 handleCard={setCard}
             />}
         </div>
