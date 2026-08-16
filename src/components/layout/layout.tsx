@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { useState, useEffect } from 'react'
 import { useMediaQuery } from '@react-hook/media-query'
+import CommandPalette from "@/components/layout/command-palette"
 import Header from "@/components/layout/header"
 import NavBar from "./nav-bar"
 import { User } from "@/utils/types"
@@ -36,20 +37,23 @@ function Layout({ content, user, profilePicture }: Props) {
             <div className="grid grid-rows-[65px,_1fr] min-h-dvh max-h-dvh">
                 <Header user={user} profilePicture={profilePicture}/>
                 <main className="overflow-auto">{content}</main>
+                <CommandPalette userId={user.user_id} />
             </div>
         )
     }
 
     return (
         <div className="grid grid-cols-[auto_1fr] grid-rows-[65px,_1fr] min-h-dvh max-h-dvh">
-            <Header 
-                user={user} 
-                profilePicture={profilePicture} 
+            <Header
+                user={user}
+                profilePicture={profilePicture}
             />
 
             <NavBar />
 
             <main className="overflow-auto">{content}</main>
+
+            <CommandPalette userId={user.user_id} />
         </div>
     )
 }

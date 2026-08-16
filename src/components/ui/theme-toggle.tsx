@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { TbMoon, TbSun } from 'react-icons/tb';
 
-function applyTheme(dark: boolean) {
+export function applyTheme(dark: boolean) {
   document.documentElement.classList.toggle('dark', dark);
   localStorage.setItem('theme', dark ? 'dark' : 'light');
 }

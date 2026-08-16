@@ -3,6 +3,7 @@
 import { useReducer } from "react"
 import AddExpenseButton from "@/components/ui/add-expense-button"
 import ExpensesTable from "./expenses-table"
+import ExportCsvButton from "./export-csv-button"
 import FilterButton from "./filter-button"
 import SortButton from "./sort-button"
 import { reducer } from "@/lib/reducer"
@@ -54,6 +55,8 @@ function ExpensesPage({ user, expenses, totalPages, minAmount, maxAmount, curren
                     />
 
                     <AddExpenseButton userId={user.user_id} />
+
+                    <ExportCsvButton expenses={state.filteredExpenseList} currency={user.currency} />
                 </div>
             </div>
             
