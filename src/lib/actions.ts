@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { auth } from "@/lib/auth"
 import { signOut, signIn } from '@/lib/auth'
 import prisma from "../../prisma/client"
-import { editProfileSchemaServer, newExpenseSchemaServer, budgetSchemaServer } from '@/utils/schemas'
+import { editProfileSchemaServer, newExpenseSchemaServer, budgetSchemaServer, deleteBudgetSchemaServer } from '@/utils/schemas'
 import { EditProfile, UserExpense } from "@/utils/types"
 
 /* Authentication Actions */
@@ -131,13 +131,22 @@ export async function deleteExpense(expenseId: string) {
 /* Budget Management */
 export async function setBudget(userId: string, category: string, monthlyLimit: number) {
     const session = await auth()
-    if (!session) throw new Error("You must be logged in")
+    if (!session?.user?.email) throw new Error("You must be logged in")
 
     if (!budgetSchemaServer.safeParse({ id: userId, category, monthlyLimit }).success) {
         throw Error('Invalid Data/UserID')
     }
 
     try {
+        // Prisma's upsert `where` can only target a unique key (no relational
+        // filter like updateMany/deleteMany get), so ownership is verified as
+        // a separate lookup before trusting the caller-supplied userId.
+        const sessionUser = await prisma.user.findUnique({
+            where: { email: session.user.email },
+            select: { user_id: true }
+        })
+        if (sessionUser?.user_id !== userId) throw new Error('Not authorized')
+
         await prisma.budget.upsert({
             where: { user_id_category: { user_id: userId, category } },
             update: { monthlyLimit },
@@ -152,9 +161,19 @@ export async function setBudget(userId: string, category: string, monthlyLimit: 
 
 export async function deleteBudget(userId: string, category: string) {
     const session = await auth()
-    if (!session) throw new Error("You must be logged in")
+    if (!session?.user?.email) throw new Error("You must be logged in")
+
+    if (!deleteBudgetSchemaServer.safeParse({ id: userId, category }).success) {
+        throw Error('Invalid Data/UserID')
+    }
 
     try {
+        const sessionUser = await prisma.user.findUnique({
+            where: { email: session.user.email },
+            select: { user_id: true }
+        })
+        if (sessionUser?.user_id !== userId) throw new Error('Not authorized')
+
         await prisma.budget.deleteMany({
             where: { user_id: userId, category }
         })

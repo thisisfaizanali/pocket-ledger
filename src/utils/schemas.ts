@@ -117,3 +117,9 @@ export const budgetSchemaServer = z.object({
        .finite("Monthly limit must be finite")
        .safe("Monthly limit must be finite"),
 })
+
+// Server-side budget deletion validation (no monthlyLimit involved)
+export const deleteBudgetSchemaServer = z.object({
+   id: z.string().uuid(),
+   category: z.enum(categories),
+})
