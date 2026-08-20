@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/shadcn/badge"
 import { getCategoryColor } from "@/utils/functions";
 
 type Props = {
@@ -6,8 +5,15 @@ type Props = {
 }
 
 function CategoryLabel({ category }: Props) {
-    return(
-        <Badge style={{ backgroundColor: getCategoryColor(category) }} className="rounded-full text-light-50 font-semibold py-1 px-2 tracking-wide">{category}</Badge>
+    return (
+        <span className="flex items-center gap-2 min-w-0 text-muted-foreground">
+            <span
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                style={{ backgroundColor: getCategoryColor(category) }}
+            />
+
+            <span className="truncate">{category}</span>
+        </span>
     )
 }
 

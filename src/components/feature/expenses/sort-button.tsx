@@ -1,9 +1,6 @@
 'use client'
 
-import { useState, Dispatch } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/shadcn/dialog"
-import SortForm from "@/components/feature/expenses/sort-form"
-import { FaSortNumericDown } from "react-icons/fa"
+import { Dispatch } from "react"
 import { Action } from "@/utils/types"
 
 type Props = {
@@ -13,29 +10,31 @@ type Props = {
 }
 
 function SortButton({ dispatch, sortBy, sortDirection }: Props) {
-    const [open, setOpen] = useState(false);
-    
-    return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <button className="bg-dark-700 text-light-50 p-2 rounded-lg hover:bg-dark-500 hover:border-dark-500 flex items-center focus:outline-none focus-visible:outline-accent-500 transition-all transform active:scale-90 ease-in duration-100">
-                    <FaSortNumericDown className="text-lg max-[630px]:text-xs" />
-                </button>
-            </DialogTrigger>
+    function toggleSortBy() {
+        dispatch({ type: 'sort', payload: { sortBy: sortBy === 'Date' ? 'Amount' : 'Date', direction: sortDirection } })
+    }
 
-            <DialogContent className="max-w-[450px] !rounded-3xl bg-[#CDD5E0] border-0 pb-3">
-                <DialogHeader>
-                    <DialogTitle className="max-[400px]:text-center tracking-wide">Sort Expenses</DialogTitle>
-                </DialogHeader>
-                
-                <SortForm 
-                    handleSetOpen={setOpen} 
-                    dispatch={dispatch} 
-                    sortDirection={sortDirection} 
-                    sortBy={sortBy} 
-                />
-            </DialogContent>
-        </Dialog>
+    function toggleDirection() {
+        dispatch({ type: 'sort', payload: { sortBy, direction: sortDirection === 'Descending' ? 'Ascending' : 'Descending' } })
+    }
+
+    return (
+        <div className="flex items-center gap-2">
+            <button
+                onClick={toggleSortBy}
+                className="rounded-full border border-border bg-card px-3.5 py-2 text-xs font-medium text-foreground transition-colors hover:bg-secondary focus:outline-none focus-visible:outline-ring active:scale-90"
+            >
+                Sort: {sortBy}
+            </button>
+
+            <button
+                onClick={toggleDirection}
+                aria-label={`Sort ${sortDirection === 'Descending' ? 'ascending' : 'descending'}`}
+                className="rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-secondary focus:outline-none focus-visible:outline-ring active:scale-90"
+            >
+                {sortDirection === 'Descending' ? '↓' : '↑'}
+            </button>
+        </div>
     )
 }
 

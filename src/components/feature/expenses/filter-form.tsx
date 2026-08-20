@@ -84,7 +84,7 @@ function FilterForm({ handleSetOpen, dispatch, currency, minAmount, maxAmount, f
                                     onChange={(options) => field.onChange(options.map(option => option.value))}
                                     defaultOptions={CATEGORY_OPTIONS}
                                     placeholder="Select categories to filter"
-                                    className="bg-light-50 rounded-lg mt-0 outline-none"
+                                    className="bg-secondary rounded-lg mt-0 outline-none text-foreground"
                                     hidePlaceholderWhenSelected
                                     emptyIndicator={
                                         <p className="text-center">No categories found.</p>}
@@ -106,7 +106,7 @@ function FilterForm({ handleSetOpen, dispatch, currency, minAmount, maxAmount, f
                                 onValueChange={field.onChange}
                                 min={minAmount}
                                 max={maxAmount}
-                                className="text-dark-700 tracking-wide"
+                                className="text-foreground tracking-wide"
                                 step={calculateIdealStep(minAmount, maxAmount)}
                             />
 
@@ -127,7 +127,7 @@ function FilterForm({ handleSetOpen, dispatch, currency, minAmount, maxAmount, f
 
                         <div className="col-span-3 max-[425px]:col-span-4 space-y-1">
                             <Popover>
-                                <PopoverTrigger asChild className="bg-light-50 text-dark-700 rounded-lg placeholder:text-dark-300">
+                                <PopoverTrigger asChild className="bg-secondary text-foreground rounded-lg">
                                     <FormControl>
                                         <Button id="date" variant={"outline"} className={cn("w-full justify-start text-left font-normal", !field.value && "text-muted-foreground")}>
                                             <CalendarIcon className="mr-2 h-4 w-4 opacity-100" />
@@ -148,7 +148,7 @@ function FilterForm({ handleSetOpen, dispatch, currency, minAmount, maxAmount, f
                                     </FormControl>
                                 </PopoverTrigger>
 
-                                <PopoverContent className="w-auto p-0 rounded-lg bg-white backdrop-filter backdrop-blur-sm bg-opacity-30 border-0" align="start">
+                                <PopoverContent className="w-auto p-0 rounded-lg bg-popover border border-border" align="start">
                                     <Calendar
                                         initialFocus
                                         mode="range"
@@ -163,7 +163,7 @@ function FilterForm({ handleSetOpen, dispatch, currency, minAmount, maxAmount, f
                                         }}
                                         numberOfMonths={1}
                                         disabled={(date) => date > new Date()}
-                                        className="rounded-lg bg-white backdrop-filter backdrop-blur-sm bg-opacity-30 border-0"
+                                        className="rounded-lg bg-popover"
                                     />
                                 </PopoverContent>
                             </Popover>
@@ -174,11 +174,11 @@ function FilterForm({ handleSetOpen, dispatch, currency, minAmount, maxAmount, f
                 )}/>
 
                 <div className="flex justify-end space-x-2 mt-2">
-                    <Button type="button" onClick={onClick} className="border tracking-wide font-semibold rounded-lg border-dark-700 bg-dark-700 text-light-50 py-2 px-4 hover:bg-dark-500 hover:border-dark-500 focus:outline-none focus-visible:outline-accent-500 transition-colors transform active:scale-90 ease-in-out duration-100">
+                    <Button type="button" onClick={onClick} variant="outline" className="rounded-full tracking-wide font-semibold text-foreground hover:bg-secondary transition-colors transform active:scale-90 ease-in-out duration-100">
                         Reset
                     </Button>
-                    
-                    <Button type="submit" className="border tracking-wide font-semibold rounded-lg bg-accent-500 text-light-50 border-accent-500 py-2 px-4 hover:bg-accent-600 hover:border-accent-600 focus:outline-none focus-visible:outline-dark-700 transition-colors transform active:scale-90 ease-in-out duration-100">
+
+                    <Button type="submit" className="rounded-full tracking-wide font-semibold bg-primary text-primary-foreground hover:opacity-90 transition-colors transform active:scale-90 ease-in-out duration-100">
                         Apply
                     </Button>
                 </div>

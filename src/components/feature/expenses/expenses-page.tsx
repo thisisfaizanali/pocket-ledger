@@ -2,6 +2,7 @@
 
 import { useReducer } from "react"
 import AddExpenseButton from "@/components/ui/add-expense-button"
+import CategoryFilterChips from "./category-filter-chips"
 import ExpensesTable from "./expenses-table"
 import ExportCsvButton from "./export-csv-button"
 import FilterButton from "./filter-button"
@@ -35,23 +36,23 @@ function ExpensesPage({ user, expenses, totalPages, minAmount, maxAmount, curren
     });
 
     return (
-        <div className="pt-2 px-12 max-[1400px]:px-8 max-[1160px]:px-6 max-[900px]:pb-6 overflow-auto">
-            <div className="flex items-center justify-between">
-                <p className="text-3xl max-[1400px]:text-2xl font-bold tracking-wide">Expenses</p>
+        <div className="flex flex-col gap-5 px-11 pb-14 pt-6 max-[1400px]:px-8 max-[1160px]:px-6">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                <h1 className="text-[30px] font-bold tracking-tight text-foreground max-[1400px]:text-2xl">Expenses</h1>
 
-                <div className="flex items-center gap-4 max-[630px]:gap-2">
-                    <SortButton 
-                        dispatch={dispatch} 
-                        sortBy={state.sortBy} 
-                        sortDirection={state.sortDirection} 
+                <div className="flex items-center gap-2 max-[630px]:gap-1.5">
+                    <SortButton
+                        dispatch={dispatch}
+                        sortBy={state.sortBy}
+                        sortDirection={state.sortDirection}
                     />
 
-                    <FilterButton 
-                        dispatch={dispatch} 
-                        currency={user.currency} 
-                        minAmount={state.filters.amountRange[0]} 
-                        maxAmount={state.filters.amountRange[1]} 
-                        filterConfig={state.filters} 
+                    <FilterButton
+                        dispatch={dispatch}
+                        currency={user.currency}
+                        minAmount={state.filters.amountRange[0]}
+                        maxAmount={state.filters.amountRange[1]}
+                        filterConfig={state.filters}
                     />
 
                     <AddExpenseButton userId={user.user_id} />
@@ -59,14 +60,21 @@ function ExpensesPage({ user, expenses, totalPages, minAmount, maxAmount, curren
                     <ExportCsvButton expenses={state.filteredExpenseList} currency={user.currency} />
                 </div>
             </div>
-            
-            <ExpensesTable 
-                expenses={state.filteredExpenseList} 
-                currency={user.currency} 
-                pageCount={state.totalPages} 
-                dispatch={dispatch} 
+
+            <CategoryFilterChips
+                dispatch={dispatch}
+                activeCategories={state.filters.categories}
+                amountRange={state.filters.amountRange}
+                dateRange={state.filters.dateRange}
+            />
+
+            <ExpensesTable
+                expenses={state.filteredExpenseList}
+                currency={user.currency}
+                pageCount={state.totalPages}
+                dispatch={dispatch}
                 currentPage={state.currentPage}
-                userId={user.user_id} 
+                userId={user.user_id}
             />
         </div>
     )

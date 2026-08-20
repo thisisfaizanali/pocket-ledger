@@ -9,12 +9,13 @@ import { z } from "zod"
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/shadcn/button"
 import { Calendar } from "@/components/ui/shadcn/calendar"
+import CategoryChipPicker from "@/components/ui/category-chip-picker"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/shadcn/form"
 import { Input } from "@/components/ui/shadcn/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/shadcn/popover"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/shadcn/select"
 import { editExpense } from "@/lib/actions"
 import { cn } from "@/lib/utils"
+import { categories } from "@/utils/data"
 import { newExpenseSchemaClient } from "@/utils/schemas"
 import { Expense } from "@/utils/types"
 import '../../../styles/CustomNumberInput.css'
@@ -43,114 +44,89 @@ function ExpenseEditForm({ expense, handleSetOpen }: Props) {
         startTransition(async () => {
             const formattedData = {...data, amount: parseFloat(data.amount)};
             await editExpense(expense.expense_id, formattedData)
-            await new Promise(resolve => setTimeout(resolve, 1000));
             handleSetOpen(false);
         })
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 py-2">
                 <FormField control={form.control} name="description" render={({ field }) => (
-                    <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
-                        <FormLabel className="text-right max-[400px]:text-left font-bold tracking-wide">Description</FormLabel>
+                    <FormItem className="flex flex-col gap-1.5">
+                        <FormLabel className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Description</FormLabel>
 
-                        <div className="col-span-3 max-[400px]:col-span-4 space-y-1">
-                            <FormControl>
-                                <Input placeholder="Enter expense description" {...field} className="text-dark-700 rounded-lg bg-light-50 max-[500px]:text-sm placeholder:text-dark-300 focus:!outline-none" />
-                            </FormControl>
+                        <FormControl>
+                            <Input placeholder="What was it for?" {...field} className="rounded-full bg-secondary border-border text-foreground focus:!outline-none" />
+                        </FormControl>
 
-                            <FormMessage className="text-red-600 text-xs" />
-                        </div>
+                        <FormMessage className="text-xs text-destructive" />
                     </FormItem>
                 )}/>
 
-                <FormField control={form.control} name="amount" render={({ field }) => (
-                    <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
-                        <FormLabel className="text-right max-[400px]:text-left font-bold ">Amount</FormLabel>
+                <div className="grid grid-cols-2 gap-3">
+                    <FormField control={form.control} name="amount" render={({ field }) => (
+                        <FormItem className="flex flex-col gap-1.5">
+                            <FormLabel className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Amount</FormLabel>
 
-                        <div className="col-span-3 max-[400px]:col-span-4 space-y-1">
                             <FormControl>
-                                <Input type="number" placeholder="Enter amount" {...field} className="max-[500px]:text-sm text-dark-700 bg-light-50 rounded-lg placeholder:text-dark-300 focus:!outline-none" />
+                                <Input type="number" placeholder="0.00" {...field} className="custom-number-input rounded-full bg-secondary border-border font-mono text-foreground focus:!outline-none" />
                             </FormControl>
 
-                            <FormMessage className="text-red-600 text-xs" />
-                        </div>
-                    </FormItem>
-                )}/>
+                            <FormMessage className="text-xs text-destructive" />
+                        </FormItem>
+                    )}/>
 
-                <FormField control={form.control} name="date" render={({ field }) => (
-                    <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
-                        <FormLabel className="text-right max-[400px]:text-left font-bold tracking-wide">Date</FormLabel>
+                    <FormField control={form.control} name="date" render={({ field }) => (
+                        <FormItem className="flex flex-col gap-1.5">
+                            <FormLabel className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Date</FormLabel>
 
-                        <div className="col-span-3 max-[400px]:col-span-4 space-y-1">
                             <Popover>
-                                <PopoverTrigger asChild className="!font-normal bg-light-50 text-dark-700 rounded-lg placeholder:text-dark-300 focus:!outline-none">
+                                <PopoverTrigger asChild>
                                     <FormControl>
-                                        <Button variant={"outline"} className={cn("w-full pl-3 text-left", !field.value && "text-muted-foreground")}>
-                                            {field.value ? (format(field.value, "PPP")) : (<span>Pick a date</span>)}
+                                        <Button variant="outline" className={cn("w-full rounded-full bg-secondary border-border font-mono font-normal justify-start", !field.value && "text-muted-foreground")}>
+                                            {field.value ? (format(field.value, "MMM d, yyyy")) : (<span>Pick a date</span>)}
 
-                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-100" />
+                                            <CalendarIcon className="ml-auto h-4 w-4" />
                                         </Button>
                                     </FormControl>
                                 </PopoverTrigger>
 
-                                <PopoverContent className="w-auto p-0 rounded-lg bg-white backdrop-filter backdrop-blur-sm bg-opacity-30 border-0" align="start">
+                                <PopoverContent className="w-auto p-0 rounded-lg bg-popover border border-border" align="start">
                                     <Calendar
                                         mode="single"
                                         selected={dayjs.utc(field.value).tz(userTimeZone).toDate()}
                                         onSelect={field.onChange}
                                         disabled={(date) => date > new Date()}
                                         initialFocus
+                                        className="rounded-lg bg-popover"
                                     />
                                 </PopoverContent>
                             </Popover>
 
-                            <FormMessage className="text-red-600 text-xs" />
-                        </div>
-                    </FormItem>
-                )}/>
+                            <FormMessage className="text-xs text-destructive" />
+                        </FormItem>
+                    )}/>
+                </div>
 
                 <FormField control={form.control} name="category" render={({ field }) => (
-                    <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
-                        <FormLabel className="text-right max-[400px]:text-left font-bold tracking-wide">Category</FormLabel>
+                    <FormItem className="flex flex-col gap-1.5">
+                        <FormLabel className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Category</FormLabel>
 
-                        <div className="col-span-3 max-[400px]:col-span-4 space-y-1">
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger className="text-dark-700 bg-light-50 rounded-lg focus:outline-none transition-colors ease-in-out duration-200">
-                                        <SelectValue placeholder="Select a category" />
-                                    </SelectTrigger>
-                                </FormControl>
+                        <FormControl>
+                            <CategoryChipPicker value={field.value} onChange={field.onChange} categories={categories} />
+                        </FormControl>
 
-                                <SelectContent onWheel={(e) => e.stopPropagation()} onTouchStart={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()} className="rounded-lg bg-white backdrop-filter backdrop-blur-sm bg-opacity-30 border-0">
-                                    <SelectItem value="Housing">Housing</SelectItem>
-                                    <SelectItem value="Household Items">Household Items</SelectItem>
-                                    <SelectItem value="Utilities">Utilities</SelectItem>
-                                    <SelectItem value="Groceries">Groceries</SelectItem>
-                                    <SelectItem value="Dining Out">Dining Out</SelectItem>
-                                    <SelectItem value="Transportation">Transportation</SelectItem>
-                                    <SelectItem value="Education">Education</SelectItem>
-                                    <SelectItem value="Wellness & Fitness">Wellness & Fitness</SelectItem>
-                                    <SelectItem value="Beauty & Grooming">Beauty & Grooming</SelectItem>
-                                    <SelectItem value="Savings & Investments">Savings & Investments</SelectItem>
-                                    <SelectItem value="Insurance & Protection">Insurance & Protection</SelectItem>
-                                    <SelectItem value="Entertainment & Leisure">Entertainment & Leisure</SelectItem>
-                                    <SelectItem value="Travel & Vacation">Travel & Vacation</SelectItem>
-                                    <SelectItem value="Clothing & Accessories">Clothing & Accessories</SelectItem>
-                                    <SelectItem value="Technology">Technology</SelectItem>
-                                    <SelectItem value="Gifts & Donations">Gifts & Donations</SelectItem>
-                                </SelectContent>
-                            </Select>
-
-                            <FormMessage className="text-red-600 text-xs" />
-                        </div>
+                        <FormMessage className="text-xs text-destructive" />
                     </FormItem>
                 )}/>
-                
-                <div className="flex justify-end">
-                    <Button type="submit" disabled={isPending} className="bg-accent-500 tracking-wide font-semibold text-light-50 border rounded-lg mt-2 text-right border-accent-500 hover:bg-accent-600 hover:border-accent-600 !outline-none focus-visible:!outline-dark-700 transition-all ease-in duration-100 transform active:scale-90">
-                        {isPending ? 'Updating...' : 'Update'}
+
+                <div className="flex justify-end gap-2 mt-1">
+                    <Button type="button" variant="outline" onClick={() => handleSetOpen(false)} className="rounded-full font-semibold tracking-wide">
+                        Cancel
+                    </Button>
+
+                    <Button type="submit" disabled={isPending} className="rounded-full font-semibold tracking-wide bg-primary text-primary-foreground hover:opacity-90 transform active:scale-90 transition-transform">
+                        {isPending ? 'Updating...' : 'Save'}
                     </Button>
                 </div>
             </form>

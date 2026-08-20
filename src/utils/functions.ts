@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { Expense, ChartDataPoint } from './types'
-import { currencies, categories } from './data'
+import { currencies, currencyLocales, categories } from './data'
 
 // Setup timezone handling
 dayjs.extend(utc)
@@ -40,24 +40,30 @@ export function getCurrencySymbol(currencyCode: string) {
     return currencySymbols[currencyCode] || currencyCode;
 }
 
+// Locale used to group/format a currency's numbers per its real-world convention
+export function getCurrencyLocale(currencyCode: string) {
+    const locales: { [key: string]: string } = currencyLocales;
+    return locales[currencyCode] || 'en-US';
+}
+
 export function getCategoryColor(category: string) {
     const colors = {
-        'Housing': '#4A8FE7',
-        'Household Items': '#A0522D',
-        'Utilities': '#7FCDBB',
-        'Groceries': '#2E8B57',
-        'Dining Out': '#FFA07A',
-        'Transportation': '#20B2AA',
-        'Education': '#9370DB',
-        'Wellness & Fitness': '#FF6347',
-        'Beauty & Grooming': '#FF69B4',
-        'Savings & Investments': '#32CD32',
-        'Insurance & Protection': '#708090',
-        'Entertainment & Leisure': '#FFD700',
-        'Travel & Vacation': '#FF4500',
-        'Clothing & Accessories': '#BA55D3',
-        'Technology': '#48D1CC',
-        'Gifts & Donations': '#008080'
+        'Housing': '#6C6CF0',
+        'Household Items': '#B08968',
+        'Utilities': '#5FB0A8',
+        'Groceries': '#52A67D',
+        'Dining Out': '#E0906B',
+        'Transportation': '#4C9BD6',
+        'Education': '#9B7FE0',
+        'Wellness & Fitness': '#E0708A',
+        'Beauty & Grooming': '#D687B8',
+        'Savings & Investments': '#4FAE6E',
+        'Insurance & Protection': '#7C8590',
+        'Entertainment & Leisure': '#D6B24C',
+        'Travel & Vacation': '#DB7B4C',
+        'Clothing & Accessories': '#A874C9',
+        'Technology': '#4FBEC0',
+        'Gifts & Donations': '#4E9E9E'
     } as const
 
     return colors[category as keyof typeof colors] || '#696969'
@@ -289,7 +295,7 @@ export function isNumericCategory(key: string, dataPoint: ChartDataPoint): key i
 
 
 // Expense calculations and formatting
-export function calculateMonthlyTotalExpenses(expenses: Expense[], monthYear: string): string {
+export function calculateMonthlyTotalExpenses(expenses: Expense[], monthYear: string, currency: string = 'USD'): string {
     const [monthName, year] = monthYear.split(' ')
     const month = new Date(Date.parse(monthName + " 1, " + year)).getMonth()
     const fullYear = parseInt(year)
@@ -297,28 +303,26 @@ export function calculateMonthlyTotalExpenses(expenses: Expense[], monthYear: st
     const totalExpenses = expenses
         .filter(expense => {
             const expenseDate = new Date(expense.date)
-            return expenseDate.getMonth() === month && 
+            return expenseDate.getMonth() === month &&
                    expenseDate.getFullYear() === fullYear
         })
         .reduce((sum, expense) => sum + expense.amount, 0)
 
-    return Number.isInteger(totalExpenses)
-        ? totalExpenses.toLocaleString('en-US')
-        : totalExpenses.toLocaleString('en-US', { 
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-          })
+    return formatExpenseAmount(totalExpenses, currency)
 }
 
 /**
- * Formats expense amounts consistently.
+ * Formats expense amounts consistently, grouped per the given currency's
+ * real-world convention (see currencyLocales in @/utils/data).
  * Whole numbers: no decimal places
  * Decimals: exactly 2 decimal places
  */
-export function formatExpenseAmount(amount: number) {
+export function formatExpenseAmount(amount: number, currency: string = 'USD') {
+    const locale = getCurrencyLocale(currency)
+
     return Number.isInteger(amount)
-        ? amount.toLocaleString('en-US')
-        : amount.toLocaleString('en-US', { 
+        ? amount.toLocaleString(locale)
+        : amount.toLocaleString(locale, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
           })

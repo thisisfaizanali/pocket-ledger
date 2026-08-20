@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/shadcn/dialog"
-import { FaEdit } from "react-icons/fa"
 import ExpenseEditForm from "./expense-edit-form"
 import { Expense } from "@/utils/types"
 
@@ -16,18 +15,18 @@ function ExpenseEditButton({ expense }: Props) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <button className="text-dark-700 hover:text-dark-500 text-lg max-[900px]:text-md rounded-md transition-all focus:outline-none focus-visible:outline-accent-500 ease-in-out duration-100 transform active:scale-90"><FaEdit /></button>
+                <button className="rounded text-xs text-muted-foreground transition-colors hover:text-foreground focus:outline-none focus-visible:outline-ring">Edit</button>
             </DialogTrigger>
 
-            <DialogContent className="max-w-[450px] !rounded-3xl bg-[#CDD5E0] border-0">
+            <DialogContent className="max-w-[450px] !rounded-3xl border border-border bg-card text-card-foreground shadow-[var(--shadow-card)]">
                 <DialogHeader>
-                    <DialogTitle className="max-[400px]:text-center tracking-wide">Edit Expesnse</DialogTitle>
+                    <DialogTitle className="max-[400px]:text-center tracking-wide text-foreground">Edit expense</DialogTitle>
                 </DialogHeader>
-                
-                <ExpenseEditForm 
-                    expense={expense} 
+
+                <ExpenseEditForm
+                    expense={expense}
                     handleSetOpen={setOpen}
-                /> 
+                />
             </DialogContent>
         </Dialog>
     )

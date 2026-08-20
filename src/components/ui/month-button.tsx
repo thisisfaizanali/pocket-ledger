@@ -13,7 +13,7 @@ function MonthButton({ month, handleSetMonth, monthsRange }: Props) {
 
     return (
         <Select value={month} onValueChange={handleSetMonth}>
-            <SelectTrigger className="font-semibold tracking-wide border w-[180px] max-[645px]:w-[150px] max-[1620px]:text-sm max-[645px]:text-xs rounded-lg bg-primary hover:bg-primary/90 border-primary text-primary-foreground py-1 px-3 transition-colors ease-in-out duration-200 focus:outline-none focus-visible:outline-ring">
+            <SelectTrigger className="font-semibold tracking-wide border w-[180px] max-[645px]:w-[150px] max-[1620px]:text-sm max-[645px]:text-xs rounded-full bg-primary hover:opacity-90 border-primary text-primary-foreground py-1 px-3 transition-colors ease-in-out duration-200 focus:outline-none focus-visible:outline-ring">
                 <SelectValue />
             </SelectTrigger>
 

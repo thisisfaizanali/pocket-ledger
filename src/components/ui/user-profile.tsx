@@ -1,31 +1,38 @@
 import Image from 'next/image'
-import { useMediaQuery } from '@react-hook/media-query'
-import { VscAccount } from "react-icons/vsc"
 
 type ProfileProps = {
     username: string
     profilePicture: string | null | undefined
 }
 
-function UserProfile({ username, profilePicture }: ProfileProps) {
-    const isTablet = useMediaQuery('(max-width: 945px)')
-    const imageSize = isTablet ? 28 : 32
+function initials(name: string) {
+    const parts = name.trim().split(/\s+/).filter(Boolean)
+    if (parts.length === 0) return '?'
+    const first = parts[0][0] ?? ''
+    const last = parts.length > 1 ? parts[parts.length - 1][0] : ''
+    return (first + last).toUpperCase()
+}
 
+function UserProfile({ username, profilePicture }: ProfileProps) {
     return (
-        <div className={`flex p-1 items-center rounded-lg gap-4 hover:underline-offset-[6px] hover:underline hover:text-accent-500 outline-none transition-all ease-in-out duration-200 max-[945px]:gap-3`}>
-            <p className="font-semibold max-[945px]:text-sm tracking-wide">{username}</p>
-            
+        <div className="flex items-center gap-2.5">
             {profilePicture ? (
-                <Image 
-                    src={profilePicture} 
-                    alt='User Profile Picture' 
-                    width={imageSize} 
-                    height={imageSize}
+                <Image
+                    src={profilePicture}
+                    alt="User profile picture"
+                    width={28}
+                    height={28}
                     className="rounded-full"
                 />
             ) : (
-                <VscAccount className="text-2xl max-[945px]:text-xl"/>
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">
+                    {initials(username)}
+                </span>
             )}
+
+            <span className="whitespace-nowrap text-[13.5px] font-semibold tracking-wide text-foreground max-[500px]:hidden">
+                {username}
+            </span>
         </div>
     )
 }

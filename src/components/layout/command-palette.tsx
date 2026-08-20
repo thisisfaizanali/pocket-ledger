@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { FaMoneyBillTransfer } from "react-icons/fa6"
 import { FiPlus } from "react-icons/fi"
 import { MdAnalytics } from "react-icons/md"
-import { TbLayoutDashboardFilled, TbMoon, TbSun } from "react-icons/tb"
+import { TbLayoutDashboardFilled, TbMoon, TbSettings, TbSun, TbWallet } from "react-icons/tb"
 import {
     CommandDialog,
     CommandEmpty,
@@ -68,6 +68,16 @@ function CommandPalette({ userId }: Props) {
                             <MdAnalytics className="mr-2" />
                             Analytics
                         </CommandItem>
+
+                        <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/budgets'))}>
+                            <TbWallet className="mr-2" />
+                            Budgets
+                        </CommandItem>
+
+                        <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/settings'))}>
+                            <TbSettings className="mr-2" />
+                            Settings
+                        </CommandItem>
                     </CommandGroup>
 
                     <CommandSeparator />
@@ -91,9 +101,9 @@ function CommandPalette({ userId }: Props) {
             </CommandDialog>
 
             <Dialog open={addExpenseOpen} onOpenChange={setAddExpenseOpen}>
-                <DialogContent className="max-w-[450px] !rounded-3xl bg-[#CDD5E0] border-0">
+                <DialogContent className="max-w-[450px] !rounded-3xl border border-border bg-card text-card-foreground shadow-[var(--shadow-card)]">
                     <DialogHeader>
-                        <DialogTitle className="max-[400px]:text-center tracking-wide">Add New Expense</DialogTitle>
+                        <DialogTitle className="max-[400px]:text-center tracking-wide text-foreground">Add New Expense</DialogTitle>
                     </DialogHeader>
 
                     <ExpenseForm

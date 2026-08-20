@@ -43,7 +43,7 @@ function Layout({ content, user, profilePicture }: Props) {
     }
 
     return (
-        <div className="grid grid-cols-[auto_1fr] grid-rows-[65px,_1fr] min-h-dvh max-h-dvh">
+        <div className="grid grid-cols-[232px,_1fr] grid-rows-[auto,_1fr] min-h-dvh max-h-dvh">
             <Header
                 user={user}
                 profilePicture={profilePicture}
@@ -51,7 +51,7 @@ function Layout({ content, user, profilePicture }: Props) {
 
             <NavBar />
 
-            <main className="overflow-auto">{content}</main>
+            <main className="overflow-auto bg-background">{content}</main>
 
             <CommandPalette userId={user.user_id} />
         </div>

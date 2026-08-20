@@ -1,4 +1,5 @@
 import { Action, ReducerState } from "@/utils/types"
+import { categories } from "@/utils/data"
 
 const PAGE_SIZE = 9
 
@@ -81,19 +82,7 @@ export function reducer(state: ReducerState, action: Action): ReducerState {
                 ...state,
                 filteredExpenseList: resetFilteredExpenses,
                 filters: {
-                    categories: [
-                        'Housing',
-                        'Transportation',
-                        'Food & Dining',
-                        'Healthcare',
-                        'Personal Care',
-                        'Education',
-                        'Entertainment & Leisure',
-                        'Technology',
-                        'Savings & Investments',
-                        'Debt Repayment',
-                        'Gifts & Donations'
-                    ],
+                    categories,
                     amountRange: [minAmount, maxAmount], // Use calculated range from original list
                     dateRange: { from: undefined, to: undefined }
                 },

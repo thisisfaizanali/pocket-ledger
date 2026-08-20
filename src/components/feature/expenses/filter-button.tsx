@@ -27,14 +27,14 @@ function FilterButton({ dispatch, currency, minAmount, maxAmount, filterConfig }
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <button className="bg-dark-700 border-dark-700 border text-light-50 p-2 rounded-lg hover:bg-dark-500 hover:border-dark-500 flex items-center focus:outline-none focus-visible:outline-accent-500 transition-all transform active:scale-90 ease-in-out duration-100">
-                    <FaFilterCircleDollar className="text-[17px] max-[630px]:text-[11px]" />
+                <button className="flex items-center rounded-full border border-border bg-card p-2.5 text-foreground hover:bg-secondary focus:outline-none focus-visible:outline-ring transition-all transform active:scale-90 ease-in-out duration-100">
+                    <FaFilterCircleDollar className="text-[17px] max-[630px]:text-[13px]" />
                 </button>
             </DialogTrigger>
 
-            <DialogContent className="max-w-[450px] !rounded-3xl bg-[#CDD5E0]">
+            <DialogContent className="max-w-[450px] !rounded-3xl border border-border bg-card text-card-foreground shadow-[var(--shadow-card)]">
                 <DialogHeader>
-                    <DialogTitle className="max-[425px]:text-center tracking-wide">Filter Expenses</DialogTitle>
+                    <DialogTitle className="max-[425px]:text-center tracking-wide text-foreground">Filter Expenses</DialogTitle>
                 </DialogHeader>
                 
                 <FilterForm 

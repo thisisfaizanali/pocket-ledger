@@ -19,10 +19,10 @@ async function OverviewPage() {
     const currencySymbol = getCurrencySymbol(user.currency)
 
     return (
-        <div className="grid grid-cols-[64fr_36fr] max-[960px]:grid-cols-[100fr] gap-14 max-[1400px]:gap-8 max-[1280px]:gap-6 px-12 max-[1400px]:px-8 max-[1160px]:px-6 max-[960px]:pb-6">
+        <div className="flex flex-col gap-6 max-w-[1080px] px-11 pb-20 pt-6 max-[1400px]:px-8 max-[1160px]:px-6">
             <MonthlySummary
-                userId={user.user_id}
                 allExpenses={expenses}
+                currency={user.currency}
                 currencySymbol={currencySymbol}
                 budgets={budgets}
             />

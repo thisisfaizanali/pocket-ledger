@@ -17,14 +17,14 @@ function AddExpenseButton({ userId }: Props) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild className="">
-                <button className="border font-semibold tracking-wide rounded-lg text-sm max-[1400px]:text-xs ml-2 bg-accent-500 border-accent-500 text-light-50 py-2 px-4 max-[630px]:p-2 hover:bg-accent-600 hover:border-accent-600 transition-all ease-in-out duration-200 focus:outline-none focus-visible:!outline-dark-700 transform active:scale-90">
-                    {isMobile ? <FiPlus className="text-lg" /> : 'Add New Expense'}
+                <button className="rounded-full text-sm font-semibold tracking-wide ml-2 bg-primary text-primary-foreground py-2 px-4 max-[630px]:p-2 hover:opacity-90 transition-all ease-in-out duration-200 focus:outline-none focus-visible:!outline-ring transform active:scale-90">
+                    {isMobile ? <FiPlus className="text-lg" /> : '+ Add expense'}
                 </button>
             </DialogTrigger>
 
-            <DialogContent className="max-w-[450px] !rounded-3xl bg-[#CDD5E0] border-0">
+            <DialogContent className="max-w-[450px] !rounded-3xl border border-border bg-card text-card-foreground shadow-[var(--shadow-card)]">
                 <DialogHeader>
-                    <DialogTitle className="max-[400px]:text-center tracking-wide">Add New Expense</DialogTitle>
+                    <DialogTitle className="max-[400px]:text-center tracking-wide text-foreground">Add New Expense</DialogTitle>
                 </DialogHeader>
                 
                 <ExpenseForm 

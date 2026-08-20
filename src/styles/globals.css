@@ -4,23 +4,24 @@
 @tailwind utilities;
 
 /*
- * Design tokens — "Ink & Gold Ledger"
+ * Design tokens — "Ink & Gold" (green-accent glass redesign)
  * Primitive palette (HSL triplets, no hsl() wrapper so shadcn's
  * hsl(var(--x) / <alpha-value>) convention keeps working), then semantic
- * aliases on top. Dark is the hero look; light is a warm-paper variant.
+ * aliases on top. Dark is the hero look; light is a clean paper variant.
  */
 @layer base {
     :root {
-        --paper: 45 44% 96%;       /* #FAF8F2 warm paper bg */
+        --paper: 240 20% 97%;      /* #F6F6F9 app bg */
         --panel: 0 0% 100%;        /* #FFFFFF card surface */
-        --panel-2: 43 32% 92%;     /* #F3F0E8 raised / hover surface */
-        --hairline: 39 30% 86%;    /* #E6E1D5 borders */
-        --ink: 220 14% 12%;        /* #1A1E24 primary text */
-        --ink-muted: 220 9% 46%;   /* #6B7280 secondary text */
-        --gold: 42 83% 43%;        /* #C79212 money / brand accent */
-        --gold-ink: 220 14% 12%;   /* text on gold */
-        --jade: 153 55% 40%;       /* #2E9E6B income / under budget */
-        --coral: 10 62% 53%;       /* #D2543C expense / over budget */
+        --panel-2: 240 20% 95%;    /* #F0F0F5 raised / hover surface */
+        --hairline: 240 17% 91%;   /* #E4E4EC borders */
+        --ink: 230 13% 9%;         /* #14151A primary text */
+        --ink-muted: 226 6% 45%;   /* #6D707A secondary text */
+        --brand: 155 78% 32%;      /* #128F5B money / brand accent */
+        --brand-ink: 0 0% 100%;    /* text on brand */
+        --success: 153 68% 37%;    /* #1E9D63 income / under budget */
+        --danger: 4 65% 54%;       /* #D6473D expense / over budget */
+        --shadow-card: 0 20px 45px -22px rgba(20, 20, 40, 0.14);
 
         --background: var(--paper);
         --foreground: var(--ink);
@@ -28,23 +29,23 @@
         --card-foreground: var(--ink);
         --popover: var(--panel);
         --popover-foreground: var(--ink);
-        --primary: var(--gold);
-        --primary-foreground: var(--gold-ink);
+        --primary: var(--brand);
+        --primary-foreground: var(--brand-ink);
         --secondary: var(--panel-2);
         --secondary-foreground: var(--ink);
         --muted: var(--panel-2);
         --muted-foreground: var(--ink-muted);
         --accent: var(--panel-2);
         --accent-foreground: var(--ink);
-        --destructive: var(--coral);
+        --destructive: var(--danger);
         --destructive-foreground: 0 0% 100%;
         --border: var(--hairline);
         --input: var(--hairline);
-        --ring: var(--gold);
+        --ring: var(--brand);
         --radius: 0.75rem;
 
-        --positive: var(--jade);
-        --negative: var(--coral);
+        --positive: var(--success);
+        --negative: var(--danger);
 
         --chart-1: 12 76% 61%;   /* Warm red */
         --chart-2: 173 58% 39%;  /* Teal */
@@ -54,16 +55,17 @@
     }
 
     .dark {
-        --paper: 214 19% 7%;       /* #0F1216 */
-        --panel: 216 18% 11%;      /* #171B21 */
-        --panel-2: 217 17% 15%;    /* #1F242C */
-        --hairline: 215 17% 20%;   /* #2A313B */
-        --ink: 47 19% 91%;         /* #ECEAE3 */
-        --ink-muted: 213 11% 64%;  /* #9AA3AE */
-        --gold: 42 75% 56%;        /* #E3B23C */
-        --gold-ink: 220 14% 12%;
-        --jade: 151 39% 55%;       /* #5FB98E */
-        --coral: 10 73% 63%;       /* #E5705A */
+        --paper: 240 15% 5%;       /* #0B0B0F */
+        --panel: 240 8% 9%;        /* #16161A */
+        --panel-2: 240 7% 12%;     /* #1C1C20 */
+        --hairline: 240 5% 15%;    /* #232327 */
+        --ink: 240 13% 95%;        /* #F2F2F5 */
+        --ink-muted: 234 9% 59%;   /* #8D8FA0 */
+        --brand: 153 68% 42%;      /* #22B573 */
+        --brand-ink: 0 0% 100%;
+        --success: 151 50% 53%;    /* #4CC38A */
+        --danger: 4 83% 65%;       /* #F0655A */
+        --shadow-card: 0 24px 50px -20px rgba(0, 0, 0, 0.65);
 
         --chart-1: 220 70% 50%;  /* Royal blue */
         --chart-2: 160 60% 45%;  /* Forest green */
@@ -90,7 +92,7 @@
 
 .custom-number-input::-webkit-inner-spin-button:hover,
 .custom-number-input::-webkit-outer-spin-button:hover {
-    background: hsl(var(--gold));
+    background: hsl(var(--brand));
 }
 
 .custom-number-input::-webkit-inner-spin-button:before,

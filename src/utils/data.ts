@@ -20,6 +20,32 @@ export const currencies = {
     ZAR: 'R',     // South Africa
 } as const
 
+/*
+ * Locale used to group/decimal-format each currency's numbers per its own
+ * real-world convention (comma vs. period thousands separator, lakh/crore
+ * grouping for INR/PKR, etc.) instead of hardcoding US formatting everywhere.
+ */
+export const currencyLocales = {
+    AED: 'en-US',
+    AUD: 'en-AU',
+    BRL: 'pt-BR',
+    CAD: 'en-CA',
+    CHF: 'de-CH',
+    CNY: 'zh-CN',
+    EUR: 'de-DE',
+    GBP: 'en-GB',
+    HKD: 'en-HK',
+    INR: 'en-IN',
+    JPY: 'ja-JP',
+    MXN: 'en-US',
+    PKR: 'en-IN',
+    RUB: 'ru-RU',
+    SAR: 'en-US',
+    SGD: 'en-SG',
+    USD: 'en-US',
+    ZAR: 'en-ZA',
+} as const
+
 /* Expense categories supported by the application */
 export const categories = [
     'Housing',

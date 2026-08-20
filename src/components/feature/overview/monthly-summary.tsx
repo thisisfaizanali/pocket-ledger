@@ -11,20 +11,21 @@ import { Expense } from "@/utils/types"
 type Budget = { category: string; monthlyLimit: number }
 
 type Props = {
-    userId: string;
     allExpenses: Expense[];
+    currency: string;
     currencySymbol: string;
     budgets: Budget[];
 }
 
-function MonthlySummary({ userId, allExpenses, currencySymbol, budgets }: Props) {
+function MonthlySummary({ allExpenses, currency, currencySymbol, budgets }: Props) {
     const monthsRange = getMonthYearRange(allExpenses)
     const [month, setMonth] = useState(monthsRange[0])
 
     return (
-        <div className="flex flex-col gap-4 pt-1">
+        <div className="flex flex-col gap-6">
             <MonthlyTotal
                 allExpenses={allExpenses}
+                currency={currency}
                 currencySymbol={currencySymbol}
                 monthsRange={monthsRange}
                 month={month}
@@ -35,21 +36,24 @@ function MonthlySummary({ userId, allExpenses, currencySymbol, budgets }: Props)
                 highestExpense={getMonthlyHighestExpense(allExpenses, month)}
                 highestSpent={getMonthlyHighestSpentCategory(allExpenses, month)}
                 leastSpent={getMonthlyLeastSpentCategory(allExpenses, month)}
+                currency={currency}
                 symbol={currencySymbol}
                 month={month}
             />
 
-            <MonthlyStatistics
-                allExpenses={allExpenses}
-                month={month}
-            />
+            <div className="grid grid-cols-[1.3fr_1fr] gap-4 max-[960px]:grid-cols-1">
+                <MonthlyStatistics
+                    allExpenses={allExpenses}
+                    month={month}
+                />
 
-            <BudgetProgress
-                userId={userId}
-                currencySymbol={currencySymbol}
-                budgets={budgets}
-                categoryTotals={calculateCategoryTotals(allExpenses, month)}
-            />
+                <BudgetProgress
+                    currency={currency}
+                    currencySymbol={currencySymbol}
+                    budgets={budgets}
+                    categoryTotals={calculateCategoryTotals(allExpenses, month)}
+                />
+            </div>
         </div>
     )
 }

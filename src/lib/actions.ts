@@ -184,6 +184,28 @@ export async function deleteBudget(userId: string, category: string) {
     }
 }
 
+/* Account Management */
+export async function deleteAccount(userId: string) {
+    const session = await auth()
+    if (!session?.user?.email) throw new Error("You must be logged in")
+
+    // Verify the caller-supplied userId actually belongs to the signed-in session
+    // before deleting anything, same pattern as setBudget/deleteBudget.
+    const sessionUser = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        select: { user_id: true }
+    })
+    if (sessionUser?.user_id !== userId) throw new Error('Not authorized')
+
+    await prisma.$transaction([
+        prisma.expense.deleteMany({ where: { user_id: userId } }),
+        prisma.budget.deleteMany({ where: { user_id: userId } }),
+        prisma.user.delete({ where: { user_id: userId } })
+    ])
+
+    await signOut({ redirectTo: "/" })
+}
+
 /* Pagination Management */
 export async function updatePageNumber(userId: string, currentPage: number, updatedPage: number) {
     const session = await auth()

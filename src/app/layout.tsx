@@ -1,11 +1,12 @@
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import { GeistMono } from 'geist/font/mono';
-import localFont from 'next/font/local';
+import { Inter } from 'next/font/google';
 import Script from 'next/script';
 
-const local = localFont({
-  src: '../fonts/literal/Literal - Light (Personal use).otf',
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -57,8 +58,8 @@ const metadata: Metadata = {
 
 function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={GeistMono.variable} suppressHydrationWarning>
-      <body className={`${local.className} h-svh bg-background text-foreground`}>
+    <html lang="en" className={`${GeistMono.variable} ${inter.variable}`} suppressHydrationWarning>
+      <body className="h-svh font-sans bg-background text-foreground">
         <Script id="theme-init" strategy="beforeInteractive">
           {`(function () {
             try {

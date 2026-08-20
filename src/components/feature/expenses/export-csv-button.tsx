@@ -42,7 +42,7 @@ function ExportCsvButton({ expenses, currency }: Props) {
             onClick={handleExport}
             disabled={expenses.length === 0}
             aria-label="Export expenses as CSV"
-            className="bg-transparent text-muted-foreground border border-border p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-all focus:outline-none focus-visible:!outline-ring transform active:scale-90 ease-in-out duration-200 disabled:opacity-50 disabled:pointer-events-none"
+            className="bg-card text-muted-foreground border border-border p-2.5 rounded-full hover:bg-secondary hover:text-foreground transition-all focus:outline-none focus-visible:!outline-ring transform active:scale-90 ease-in-out duration-200 disabled:opacity-50 disabled:pointer-events-none"
         >
             <FiDownload className="text-lg" />
         </button>

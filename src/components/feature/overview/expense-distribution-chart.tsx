@@ -14,7 +14,7 @@ type Props = {
 
 const chartConfig = {
     expense: { label: "Total Expenses" },
-    expenses: { label: "expenses", color: "#0d0d0d" },
+    expenses: { label: "expenses", color: "hsl(var(--primary))" },
 } satisfies ChartConfig
 
 const TICK_POSITIONS = {
@@ -49,20 +49,19 @@ function ExpenseDistributionChart({ chartData }: Props) {
     }, [chartData]);
 
     return (
-        <Card className=" bg-transparent border-0 shadow-none text-accent rounded-3xl">
+        <Card className="bg-transparent border-0 shadow-none rounded-3xl">
             <CardContent className="p-0 pt-2">
-                <ChartContainer config={chartConfig} className="aspect-auto h-80 w-full">
+                <ChartContainer config={chartConfig} className="aspect-auto h-64 w-full">
                     <BarChart accessibilityLayer data={chartData} margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
-                        <CartesianGrid 
-                            vertical={false} 
+                        <CartesianGrid
+                            vertical={false}
                             horizontal={true}
-                            stroke="#808080" 
+                            stroke="hsl(var(--border))"
                         />
 
                         <XAxis
                             dataKey="date"
                             tickLine={false}
-                            className="text-semibold"
                             axisLine={false}
                             tickMargin={12}
                             ticks={xAxisTicks}
@@ -74,15 +73,15 @@ function ExpenseDistributionChart({ chartData }: Props) {
                                 })
                             }}
                             tick={({ x, y, payload }) => (
-                                <text 
-                                    x={x} 
-                                    y={y} 
-                                    dy={8} 
-                                    textAnchor="middle" 
-                                    fill="#333333" 
-                                    fontSize={12}
-                                    fontWeight="bold"
-                                    letterSpacing="0.025em"   
+                                <text
+                                    x={x}
+                                    y={y}
+                                    dy={8}
+                                    textAnchor="middle"
+                                    fill="hsl(var(--muted-foreground))"
+                                    fontSize={11}
+                                    fontFamily="var(--font-geist-mono)"
+                                    letterSpacing="0.025em"
                                 >
                                     {new Date(payload.value).toLocaleDateString("en-US", {
                                         month: "short",
@@ -95,7 +94,7 @@ function ExpenseDistributionChart({ chartData }: Props) {
                         <ChartTooltip
                             content={
                                 <ChartTooltipContent
-                                    className="w-[12rem] pr-5 bg-white backdrop-filter backdrop-blur-sm bg-opacity-50 border-0 text-dark-700 tracking-wide"
+                                    className="w-[12rem] pr-5 rounded-xl border border-border bg-popover text-popover-foreground tracking-wide shadow-[var(--shadow-card)]"
                                     nameKey="expense"
                                     labelFormatter={(value) => {
                                         return new Date(value).toLocaleDateString("en-US", {
@@ -108,13 +107,13 @@ function ExpenseDistributionChart({ chartData }: Props) {
                             }
                         />
 
-                        <Bar 
+                        <Bar
                             type="monotone"
-                            dataKey="expenses" 
+                            dataKey="expenses"
                             stroke="var(--color-expenses)"
                             fill="var(--color-expenses)"
                             fillOpacity={1}
-                            radius={[1, 1, 0, 0]}
+                            radius={[3, 3, 0, 0]}
                         />
                     </BarChart>
                 </ChartContainer>

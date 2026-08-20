@@ -1,71 +1,55 @@
 'use client'
 
-import dayjs from 'dayjs'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useMediaQuery } from '@react-hook/media-query'
-import CategoryIcon from "../../ui/category-icon"
-import { formatExpenseAmount, getCategoryColor, getCurrencySymbol, utcToLocal } from "@/utils/functions"
+import { useTransition } from 'react'
+import Amount from '@/components/ui/amount'
+import { deleteExpense } from '@/lib/actions'
+import { formatExpenseAmount, getCategoryColor, getCurrencySymbol, utcToLocalShorter } from "@/utils/functions"
 import { Expense } from "@/utils/types"
-import { useEffect, useState } from 'react'
 
 type Props = {
     expense: Expense;
     currency: string;
 }
 
-const expenseVariant = {
-    hidden: {
-        opacity: 0
-    },
-    visible: {
-        opacity: 1,
-        transition: {
-            duration: 1
-        }
-    },
-    out: {
-        opacity: 0,
-        transition: {
-            duration: 1
-        }
-    }
+function initial(category: string) {
+    return category.trim()[0]?.toUpperCase() ?? '?'
 }
 
 function LatestExpense({ expense, currency }: Props) {
-    const [mounted, setMounted] = useState(false)
+    const [isPending, startTransition] = useTransition()
+    const currencySymbol = getCurrencySymbol(currency)
 
-    const currencySymbol = getCurrencySymbol(currency);
-    const formattedDate = utcToLocal(expense.date);
-    const amount = formatExpenseAmount(expense.amount)
-    const isTablet = useMediaQuery('(max-width: 1160px)');
-
-    useEffect(() => setMounted(true), [])
+    function handleRemove() {
+        startTransition(() => {
+            deleteExpense(expense.expense_id)
+        })
+    }
 
     return (
-        <div className="flex flex-col gap-1 border-b-1 border-dark-500 pt-[7px] pb-[13px] px-2 mb-3 font-semibold">
-            <AnimatePresence mode='wait'>
-                <motion.div key={expense.amount} variants={expenseVariant} initial={`${mounted ? 'hidden' : ''}`} animate='visible' exit='out' className="text-xs pl-2 text-dark-700 tracking-wide">{dayjs(formattedDate).format("D MMMM, YYYY")}</motion.div>
-            </AnimatePresence>
+        <div className="grid grid-cols-[32px_1fr_130px_auto] items-center gap-3.5 border-b border-border py-3 last:border-0">
+            <span
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white"
+                style={{ backgroundColor: getCategoryColor(expense.category) }}
+            >
+                {initial(expense.category)}
+            </span>
 
-            <AnimatePresence mode='wait'>
-                <motion.div key={expense.amount} variants={expenseVariant} initial={`${mounted ? 'hidden' : ''}`} animate='visible' exit='out' className="flex gap-4 px-6 mt-1">
-                    {!isTablet && 
-                        <div className="h-11 w-11 flex justify-center items-center rounded-xl" style={{ backgroundColor: getCategoryColor(expense.category) }}>
-                            <CategoryIcon category={expense.category} />
-                        </div> 
-                    }
+            <div className="flex min-w-0 flex-col gap-0.5">
+                <span className="truncate text-sm font-medium text-foreground">{expense.name}</span>
+                <span className="truncate text-xs text-muted-foreground">{expense.category} · {utcToLocalShorter(expense.date)}</span>
+            </div>
 
-                    <div className="flex flex-col grow">
-                        <div className="flex justify-between items-center text-accent">
-                            <p className="text-base tracking-wide text-dark-900">{expense.name}</p>
+            <span className="whitespace-nowrap text-right font-mono text-sm font-semibold text-foreground">
+                {currencySymbol} <Amount value={formatExpenseAmount(expense.amount, currency)} />
+            </span>
 
-                            <p className="text-base tracking-wide text-dark-900">{`${currencySymbol} ${amount}`}</p>
-                        </div>
-                            
-                        <div className={"text-xs text-dark-500 tracking-wide"}>{expense.category}</div>
-                    </div>
-                </motion.div>
-            </AnimatePresence>
+            <button
+                onClick={handleRemove}
+                disabled={isPending}
+                className="p-1 text-[11.5px] text-muted-foreground transition-colors hover:text-destructive focus:outline-none focus-visible:outline-ring disabled:opacity-50"
+            >
+                Remove
+            </button>
         </div>
     )
 }

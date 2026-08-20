@@ -1,89 +1,49 @@
 'use client'
 
-import { Dispatch, SetStateAction, useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
+import { Dispatch, SetStateAction } from 'react'
+import Amount from '@/components/ui/amount'
 import MonthButton from '@/components/ui/month-button'
 import { calculateMonthlyTotalExpenses } from "@/utils/functions"
 import { Expense } from "@/utils/types"
 
 type Props = {
     allExpenses: Expense[];
+    currency: string;
     currencySymbol: string;
     monthsRange: string[];
     month: string;
     handleSetMonth: Dispatch<SetStateAction<string>>
 }
 
-const cardVariants = {
-    hidden: {
-        rotateX: 90,
-    },
-    visible: {
-        rotateX: 0,
-        transition: {
-            duration: 0.25, 
-            ease: 'linear'
-        }
-    },
-    out: {
-        rotateX: 90,
-        transition: {
-            duration: 0.25, 
-            ease: 'linear'
-        }
-    }
-}
-
-const totalVariant = {
-    hidden: {
-        opacity: 0
-    },
-    visible: {
-        opacity: 1,
-        transition: {
-            duration: 0.5
-        }
-    },
-    out: {
-        opacity: 0,
-        transition: {
-            duration: 0.5
-        }
-    }
-}
-
-function MonthlyTotal({ allExpenses, currencySymbol, monthsRange, month, handleSetMonth }: Props) {
-    const [mount, setMount] = useState(false)
-
-    const monthlyTotal = calculateMonthlyTotalExpenses(allExpenses, month)
-
-    useEffect(() => setMount(true), [])
+function MonthlyTotal({ allExpenses, currency, currencySymbol, monthsRange, month, handleSetMonth }: Props) {
+    const monthlyTotal = calculateMonthlyTotalExpenses(allExpenses, month, currency)
 
     return (
-        <div className="flex flex-col gap-5 max-[1400px]:gap-4 max-[645px]:gap-3">
-            <div className='flex justify-between items-center'>
-                <h1 className="text-4xl max-[1400px]:text-3xl max-[645px]:text-2xl font-bold tracking-wide">Overview</h1>
+        <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-1">
+                    <span className="text-[11px] font-bold uppercase tracking-wide text-primary">{month}</span>
+                    <h1 className="text-3xl font-bold tracking-tight text-foreground max-[645px]:text-2xl">Overview</h1>
+                </div>
 
-                <MonthButton 
-                    month={month} 
-                    handleSetMonth={handleSetMonth} 
-                    monthsRange={monthsRange} 
+                <MonthButton
+                    month={month}
+                    handleSetMonth={handleSetMonth}
+                    monthsRange={monthsRange}
                 />
             </div>
 
-            <AnimatePresence mode='wait'>
-                <motion.div key={month} variants={cardVariants} initial={`${mount && 'hidden'}`} animate='visible' exit='out' className="flex flex-col backface-hidden justify-center gap-3 bg-white backdrop-filter backdrop-blur-sm bg-opacity-50 perspective-midrange rounded-3xl py-8 max-[1400px]:py-7 max-[1160px]:py-6 px-12 max-[1400px]:px-11 max-[1160px]:px-10">
-                    <p className="text-lg max-[1160px]:text-base text-dark-700 font-semibold tracking-wide">Total Expenses</p>
+            <div className="relative flex flex-col gap-2 overflow-hidden rounded-3xl border border-border bg-card p-8 shadow-[var(--shadow-card)] max-[1160px]:p-6">
+                <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-primary opacity-20 blur-3xl" />
 
-                    <AnimatePresence mode='wait'>
-                        <motion.p key={monthlyTotal} variants={totalVariant} initial={`${mount && 'hidden'}`} animate='visible' exit='out' className="text-5xl max-[1160px]:text-4xl font-bold text-dark-900 tracking-wide">{`${currencySymbol} ${monthlyTotal}`}</motion.p>
-                    </AnimatePresence>
+                <span className="relative text-xs font-semibold text-muted-foreground">Total spent this month</span>
 
-                    <p className="max-[1160px]:text-sm text-dark-500 font-semibold tracking-wide">{month}</p>
-                </motion.div>
-            </AnimatePresence>
+                <span className="relative whitespace-nowrap font-mono text-5xl font-semibold tracking-tight text-foreground max-[1160px]:text-4xl">
+                    {currencySymbol} <Amount value={monthlyTotal} />
+                </span>
+            </div>
         </div>
-    )   
+    )
 }
 
 export default MonthlyTotal;

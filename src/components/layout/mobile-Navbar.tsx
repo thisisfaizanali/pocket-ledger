@@ -5,21 +5,29 @@ import {
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/shadcn/sheet';
+import LogoMark from '@/components/ui/logo-mark';
+import ThemeToggle from '@/components/ui/theme-toggle';
 import { signOutAction } from '@/lib/actions';
-import { motion } from 'framer-motion';
-import localFont from 'next/font/local';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { FaMoneyBillTransfer } from 'react-icons/fa6';
 import { MdAnalytics } from 'react-icons/md';
 import { RxHamburgerMenu } from 'react-icons/rx';
-import { TbLayoutDashboardFilled, TbLogout2 } from 'react-icons/tb';
+import {
+  TbLayoutDashboardFilled,
+  TbLogout2,
+  TbSettings,
+  TbWallet,
+} from 'react-icons/tb';
 
-const local = localFont({
-  src: '../../fonts/publica-sans/ZPublicaSans.otf',
-  display: 'swap',
-});
+const NAV_ITEMS = [
+  { href: '/dashboard', label: 'Overview', icon: TbLayoutDashboardFilled },
+  { href: '/dashboard/expenses', label: 'Expenses', icon: FaMoneyBillTransfer },
+  { href: '/dashboard/analytics', label: 'Analytics', icon: MdAnalytics },
+  { href: '/dashboard/budgets', label: 'Budgets', icon: TbWallet },
+  { href: '/dashboard/settings', label: 'Settings', icon: TbSettings },
+];
 
 export default function MobileNavbar() {
   const [open, setOpen] = useState(false);
@@ -28,114 +36,65 @@ export default function MobileNavbar() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <button className="bg-transparent text-muted-foreground border border-border p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-all focus:outline-none focus-visible:!outline-ring transform active:scale-90 ease-in-out duration-200">
+        <button className="rounded-md border border-border bg-transparent p-2 text-muted-foreground transition-all hover:bg-accent hover:text-accent-foreground focus:outline-none focus-visible:!outline-ring active:scale-90">
           <RxHamburgerMenu />
         </button>
       </SheetTrigger>
 
-      <SheetContent
-        side={'left'}
-        className="bg-card rounded-r-3xl border-0 text-muted-foreground w-[265px] font-semibold pl-4"
-      >
-        <nav
-          className={
-            'col-start-1 col-end-2 row-start-1 row-end-3 flex flex-col h-full'
-          }
-        >
+      <SheetContent side="left" className="w-[265px] border-0 bg-card">
+        <nav className="flex h-full flex-col gap-8 pt-2">
           <Link
             href="/dashboard"
             onClick={() => setOpen(false)}
-            className={`${local.className} ml-1 mt-8 text-3xl tracking-tight font-bold text-foreground focus:outline-none focus-visible:outline-ring rounded p-1`}
+            className="flex items-center gap-2.5 rounded-lg p-1 focus:outline-none focus-visible:outline-ring"
           >
-            Pocket Ledger
+            <LogoMark size={26} />
+
+            <span className="text-[15px] font-bold tracking-tight text-foreground">
+              Pocket Ledger
+            </span>
           </Link>
 
-          <ul className={'grow flex flex-col mt-8 mb-8 mr-14 gap-2'}>
-            <li className={'flex gap-4 items-center relative'}>
-              {pathname === '/dashboard' && (
-                <motion.div
-                  layoutId="nav"
-                  className="bg-primary block absolute inset-0 rounded-lg"
-                />
-              )}
+          <ul className="flex grow flex-col gap-0.5">
+            {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+              const active = pathname === href;
 
-              <Link
-                href="/dashboard"
-                onClick={() => setOpen(false)}
-                className={`rounded-lg focus:outline-none ${pathname === '/dashboard' ? 'focus-visible:outline-ring' : 'focus-visible:outline-ring'}`}
-              >
-                <div
-                  className={`mt-auto rounded-lg text-[0.9375rem] flex gap-2 items-center ${pathname === '/dashboard' ? 'text-primary-foreground' : 'text-muted-foreground bg-transparent border-transparent hover:bg-accent hover:text-accent-foreground'} relative z-10 py-3 pl-4 pr-14 transition-colors ease-in-out duration-200`}
-                >
-                  <TbLayoutDashboardFilled className={'text-xl'} />
-
-                  <p className="tracking-wide">Overview</p>
-                </div>
-              </Link>
-            </li>
-
-            <li className={'flex gap-4 items-center relative'}>
-              {pathname === '/dashboard/expenses' && (
-                <motion.div
-                  layoutId="nav"
-                  className="bg-primary block absolute inset-0 rounded-lg"
-                />
-              )}
-
-              <Link
-                href="/dashboard/expenses"
-                onClick={() => setOpen(false)}
-                className={`focus:outline-none rounded-lg ${pathname === '/dashboard/expenses' ? 'focus-visible:outline-ring' : 'focus-visible:outline-ring'}`}
-              >
-                <div
-                  className={`mt-auto rounded-lg text-[0.91rem] flex gap-2 items-center ${pathname === '/dashboard/expenses' ? 'text-primary-foreground' : 'text-muted-foreground bg-transparent border-transparent hover:bg-accent hover:text-accent-foreground'} relative z-10 py-3 pl-4 pr-14 transition-colors ease-in-out duration-200`}
-                >
-                  <FaMoneyBillTransfer className={'text-xl'} />
-
-                  <p className="tracking-wide">Expenses</p>
-                </div>
-              </Link>
-            </li>
-
-            <li className={'flex gap-4 items-center relative'}>
-              {pathname === '/dashboard/analytics' && (
-                <motion.div
-                  layoutId="nav"
-                  className="bg-primary block absolute inset-0 rounded-lg"
-                />
-              )}
-
-              <Link
-                href="/dashboard/analytics"
-                onClick={() => setOpen(false)}
-                className={`rounded-lg focus:outline-none ${pathname === '/dashboard/analytics' ? 'focus-visible:outline-ring' : 'focus-visible:outline-ring'}`}
-              >
-                <div
-                  className={`mt-auto rounded-lg text-[0.9375rem] flex gap-2 items-center ${pathname === '/dashboard/analytics' ? 'text-primary-foreground' : 'text-muted-foreground bg-transparent border-transparent hover:bg-accent hover:text-accent-foreground'} relative z-10 py-3 pl-4 pr-14 transition-colors ease-in-out duration-200`}
-                >
-                  <MdAnalytics className={'text-xl'} />
-
-                  <p className="tracking-wide">Analytics</p>
-                </div>
-              </Link>
-            </li>
-
-            <li className={'mt-auto flex gap-4 items-center'}>
-              <form action={signOutAction}>
-                <button
-                  onClick={() => setOpen(false)}
-                  className={
-                    'mt-auto rounded-lg text-[0.9375rem] flex gap-2 items-center py-3 pl-4 pr-14 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors ease-in-out duration-200'
-                  }
-                  type="submit"
-                >
-                  <TbLogout2 className={'text-xl'} />
-
-                  <p className="tracking-wide">Log out</p>
-                </button>
-              </form>
-            </li>
+              return (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    onClick={() => setOpen(false)}
+                    className={`flex w-full items-center gap-3 rounded-full px-3.5 py-2.5 text-sm transition-colors focus:outline-none focus-visible:outline-ring ${
+                      active
+                        ? 'bg-secondary font-semibold text-foreground'
+                        : 'font-medium text-muted-foreground hover:bg-secondary/60'
+                    }`}
+                  >
+                    <Icon className="shrink-0 text-lg" />
+                    <span className="tracking-wide">{label}</span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
+
+          <div className="mt-auto flex flex-col gap-2.5">
+            <div className="flex items-center justify-between gap-2 px-1">
+              <span className="text-xs text-muted-foreground">Theme</span>
+              <ThemeToggle />
+            </div>
+
+            <form action={signOutAction}>
+              <button
+                onClick={() => setOpen(false)}
+                type="submit"
+                className="flex w-full items-center gap-3 rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground focus:outline-none focus-visible:outline-ring"
+              >
+                <TbLogout2 className="shrink-0 text-lg" />
+                <span className="tracking-wide">Log out</span>
+              </button>
+            </form>
+          </div>
         </nav>
       </SheetContent>
     </Sheet>
