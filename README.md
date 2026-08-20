@@ -8,7 +8,8 @@ A personal portfolio project that delivers a modern, intuitive expense tracking 
 
 ## 📸 Snippet
 
-![Pocket Ledger Overview](public/og-image.png)
+![Pocket Ledger Overview](public/screenshot-overview.png)
+![Pocket Ledger Budgets and Recent Expenses](public/screenshot-overview-expenses.png)
 
 ## ✨ Features
 
@@ -16,8 +17,15 @@ A personal portfolio project that delivers a modern, intuitive expense tracking 
 
 - 🧾 Easy expense entry with detailed categorization
 - 📋 View, edit, and delete expense records
-- 🏷️ Diverse categorization system with 11 preset categories
-- 💼 Multi-currency support with 18 major currencies
+- 🏷️ Diverse categorization system with 16 preset categories
+- 💼 Multi-currency support with 18 major currencies, each formatted to its own real-world convention (lakh grouping for INR/PKR, comma-decimal for EUR/RUB/BRL, etc.)
+- 📤 One-click CSV export
+
+### Budgets
+
+- 🎯 Set a monthly limit per category
+- 📊 Live progress bars with under/over-budget coloring
+- 📌 At-a-glance snapshot on the Overview page, full management on its own page
 
 ### Advanced Analytics
 
@@ -28,11 +36,18 @@ A personal portfolio project that delivers a modern, intuitive expense tracking 
 
 ### User Experience
 
-- 🌙 Modern, clean interface
+- 🎨 Ink & Gold design system — a glass-panel, green-accent interface with a dedicated command palette (⌘K / Ctrl+K) for quick navigation and actions
 - 📱 Fully responsive design for all devices
+- 🌗 Light/dark theme toggle
 - ⚡ Real-time updates and smooth transitions
 - 🔍 Advanced filtering and sorting capabilities
 - 📲 Installable as a Progressive Web App (PWA)
+
+### Settings & Account
+
+- 👤 Editable profile and currency/appearance preferences
+- 📤 Export all expenses to CSV
+- 🗑️ Permanent account deletion (with confirmation)
 
 ### Security & Authentication
 
@@ -130,8 +145,6 @@ yarn dev
 ### Development Tools
 
 - ESLint - Code linting
-- Prettier - Code formatting
-- Husky - Git hooks
 - PostCSS - CSS processing
 
 ## 📱 Responsive Design
@@ -142,16 +155,20 @@ Pocket Ledger is built with a desktop-first approach, ensuring a seamless experi
 
 ### Theme Configuration
 
-The application uses a custom theme with the following color palette:
+The app uses semantic CSS variables (defined once in `src/styles/globals.css`, re-exposed as Tailwind color names) so light and dark mode share the same source of truth. The dark palette — the primary look:
 
 ```css
-:root {
-  --primary: #bde9c9;
-  --secondary: #2d8c47;
-  --accent: #ea5166;
-  --neutral: #fcf9e0;
+.dark {
+  --paper: #0b0b0f;   /* app background */
+  --panel: #16161a;   /* card surface */
+  --ink: #f2f2f5;     /* primary text */
+  --brand: #22b573;   /* accent / money highlight */
+  --success: #4cc38a; /* under budget */
+  --danger: #f0655a;  /* over budget */
 }
 ```
+
+Money figures render in Geist Mono with tabular numerals; everything else uses Inter.
 
 ## 📝 Project Structure
 
@@ -162,8 +179,10 @@ pocket-ledger/
 │   ├── components/                      # React components
 │   │   ├── feature/                     # Feature-specific components
 │   │   │   ├── analytics/               # Analytics page components
+│   │   │   ├── budgets/                 # Budgets page components
 │   │   │   ├── expenses/                # Expenses page components
-│   │   │   └── overview/                # Overview page components
+│   │   │   ├── overview/                # Overview page components
+│   │   │   └── settings/                # Settings page components
 │   │   ├── layout/                      # Layout components
 │   │   └── ui/                          # Reusable UI components
 │   │       ├── shadcn/                  # shadcn/ui components
